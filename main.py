@@ -124,7 +124,7 @@ def extract_text_from_pptx(file):
     for slide in prs.slides:
         slide_text = ""
         for shape in slide.shapes:
-            if hasattr(shape, "text"):  # Verifica se o shape tem texto
+            if hasattr(shape, "text"):
                 slide_text += shape.text + "\n"
         slides_text.append(slide_text.strip())
     return slides_text
@@ -138,66 +138,77 @@ def extract_text_from_pdf(file):
     return pages_text
 
 st.set_page_config(layout="wide")
-st.title("Upload e Extração de Texto de PPTX e PDF")
+st.title("Aprovação de Imagens e Correção de Textos")
 
-# Campo de upload para múltiplos arquivos de diretrizes (PPTX ou PDF)
-uploaded_guideline_files = st.file_uploader("Envie arquivos de diretrizes (.pptx, .pdf)", type=["pptx", "pdf"], accept_multiple_files=True)
+tipo_aprovacao = st.selectbox("Selecione o tipo de conteúdo a ser aprovado:", ["Imagem", "Texto"])
 
-# Campo de upload para a imagem
-uploaded_image_file = st.file_uploader("Envie uma imagem para aprovação (.jpg, .jpeg, .png)", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Envie um arquivo PDF ou PPTX com referência para a análise:", type=["pdf", "pptx"])
 
-branding_material = ""
-if uploaded_guideline_files:
-    all_texts = []
-    
-    # Processa cada arquivo carregado
-    for uploaded_guideline_file in uploaded_guideline_files:
-        file_type = uploaded_guideline_file.name.split(".")[-1]
+texto_extraido = ""
+if uploaded_file:
+    if uploaded_file.type == "application/pdf":
+        texto_extraido = "\n".join(extract_text_from_pdf(uploaded_file))
+    elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        texto_extraido = "\n".join(extract_text_from_pptx(uploaded_file))
+
+if tipo_aprovacao == "Imagem":
+    uploaded_image_file = st.file_uploader("Envie uma imagem para aprovação (.jpg, .jpeg, .png)", type=["jpg", "jpeg", "png"])
+
+    if uploaded_image_file is not None:
+        st.image(uploaded_image_file, caption='Imagem Carregada', use_container_width=True)
+        image = Image.open(uploaded_image_file)
+        img_byte_arr = io.BytesIO()
+        image.save(img_byte_arr, format=image.format)
+        img_bytes = img_byte_arr.getvalue()
+        mime_type = "image/png" if image.format == "PNG" else "image/jpeg"
+
+        prompt = f"""
+        Você está avaliando uma imagem para campanhas da Holambra Cooperativa Agroindustrial.
+        Considere os seguintes feedbacks anteriores do cliente ({guias}).
+        Além disso, aqui está o material de referência enviado para embasar sua análise:
+        {texto_extraido if texto_extraido.strip() else "(Nenhum arquivo enviado)"}
         
-        if file_type == "pptx":
-            texts = extract_text_from_pptx(io.BytesIO(uploaded_guideline_file.read()))
-            all_texts.extend(texts)
-        elif file_type == "pdf":
-            texts = extract_text_from_pdf(io.BytesIO(uploaded_guideline_file.read()))
-            all_texts.extend(texts)
+        Analise cada detalhe da imagem e forneça uma avaliação rigorosa, apontando se ela está aprovada ou o que precisa ser corrigido.
+        """
 
-    # Concatenar o texto extraído de todos os arquivos
-    branding_material = "\n\n".join(all_texts)
-    
-    # Salvar em variável global
-    st.session_state["extracted_texts"] = all_texts
-    st.success("Texto extraído de todos os arquivos com sucesso!")
+        try:
+            with st.spinner('Analisando a imagem...'):
+                resposta = modelo_vision.generate_content(
+                    contents=[prompt, {"mime_type": mime_type, "data": img_bytes}]
+                )
+                descricao = resposta.text
+                st.subheader('Aprovação da Imagem')
+                st.write(descricao)
+        except Exception as e:
+            st.error(f"Ocorreu um erro ao processar a imagem: {e}")
 
-if uploaded_image_file is not None:
-    st.image(uploaded_image_file, caption='Imagem Carregada', use_container_width=True)
-    image = Image.open(uploaded_image_file)
-    img_byte_arr = io.BytesIO()
-    image.save(img_byte_arr, format=image.format)
-    img_bytes = img_byte_arr.getvalue()
-    mime_type = "image/png" if image.format == "PNG" else "image/jpeg"
-    
-    # Prompt para análise da imagem com base nas diretrizes
-    prompt = f"""
-    Você está aqui para aprovar imagens de criativos para campanhas de marketing digital para a cooperativa Holambra.
-    Se atente ao mínimo e extremo detalhe de tudo que está na imagem, pois você é extremamente detalhista.
-    
-    O cliente Holambra já deu alguns feedbacks sobre criativos no passado.
-    
-    Considerando os materiais de branding do cliente e as diretrizes já existentes ({branding_material}) e em {guias},
-    diga se a imagem seria aprovada ou não e o que precisa melhorar para ser aprovada.
-    """
-    
-    try:
-        with st.spinner('Analisando a imagem...'):
-            resposta = modelo_vision.generate_content(
-                contents=[prompt, {"mime_type": mime_type, "data": img_bytes}]
-            )
-            descricao = resposta.text
-            st.subheader('Aprovação da Imagem')
-            st.write(descricao)
-    except Exception as e:
-        st.error(f"Ocorreu um erro ao processar a imagem: {e}")
-        
-if st.button("Remover Arquivo"):
+elif tipo_aprovacao == "Texto":
+    texto_para_correcao = st.text_area("Cole o texto que deseja corrigir:")
+
+    if st.button("Corrigir Texto"):
+        if texto_para_correcao.strip() or texto_extraido.strip():
+            prompt_texto = f"""
+            Você é um revisor de textos altamente detalhista.
+            Aqui está o material de referência extraído do arquivo enviado:
+            {texto_extraido if texto_extraido.strip() else "(Nenhum arquivo enviado)"}
+            
+            E aqui está o texto que precisa ser revisado:
+            {texto_para_correcao}
+
+            Com base no material de referência, nos feedbacks prévios ({guias}) e no branding da Holambra, revise o texto e sugira melhorias para melhorar clareza, impacto e adequação ao contexto.
+            """
+
+            try:
+                with st.spinner('Analisando e corrigindo o texto...'):
+                    resposta_texto = modelo_texto.generate_content(prompt_texto)
+                    texto_corrigido = resposta_texto.text
+                    st.subheader("Texto Corrigido:")
+                    st.write(texto_corrigido)
+            except Exception as e:
+                st.error(f"Ocorreu um erro ao processar o texto: {e}")
+        else:
+            st.warning("Por favor, insira um texto ou envie um arquivo para análise.")
+
+if st.button("Limpar e Reiniciar"):
     st.session_state.clear()
     st.experimental_rerun()
