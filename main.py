@@ -1408,17 +1408,9 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
            # Diretrizes de campanhas
            - {campanhas}
 
-            Seja bem detalhista e verboso em suas descrições.
+            Seja bem detalhista ao mínimo detalhe, forneça todas e qualquer diretrizes na construção do conteúdo seja verboso em suas descrições.
 
-            # Imagens e vídeos
-            Você deve dar guias de como a imagem deve ser feita como se você estivesse conversando com um designer gráfico. Ele precisa de todas
-            as minuciosas diretrizes de como ele deve fazer seu trabalho.
-
-            # Descrições
-            Redija todo o texto que acompanha os criativos
-
-            # hashtags
-            Escolha bem as hashtags de uma forma que o conteúdo seja relevante e visível.
+            
             """
             try:
                 with st.spinner('Gerando conteúdo de campanha...'):
