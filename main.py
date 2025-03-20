@@ -1336,6 +1336,7 @@ if tipo_aprovacao == "Imagem":
         - {campanhas}
          
         - Analise a imagem por inteiro levando em conta as diretrizes.
+        - Analise e compreenda cada aspecto e elemento da imagem.
         
         O Seu papel é pegar as diretrizes, analisar a imagem e, com base nelas, dizer se a imagen seria aprovada ou não e porquê.
 
