@@ -1417,6 +1417,8 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             espera do uso de sua marca e construir os criativos de campanha. Não seja vago. Um designer gráfico deve poder ler a sua descrição se saber exatamente o que
             deve ser feito. Traga palpabilidade na sua resposta. Descreva em parágrafos de 3 a 5 frases cada elemento que você traz.
 
+            Não me repita as diretrizes de aprendizado. Me traga o criativo de campanha que segue as diretrizes.
+
             
             """
             try:
