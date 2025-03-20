@@ -1258,6 +1258,8 @@ genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 
+st.text_input('Diga o tema de campanha')
+
 def extract_text_from_pptx(file):
     prs = Presentation(file)
     slides_text = []
@@ -1280,7 +1282,8 @@ def extract_text_from_pdf(file):
 st.set_page_config(layout="wide")
 st.title("Aprovação de Imagens e Correção de Textos")
 
-tipo_aprovacao = st.selectbox("Selecione o tipo de conteúdo a ser aprovado:", ["Imagem", "Texto"])
+tipo_aprovacao = st.selectbox("Selecione o tipo de conteúdo:", ["Imagem", "Texto", "Conteúdo de Campanha"])
+
 
 guias_param = modelo_texto.generate_content(f'''O cliente Holambra enviou alguns comentários sobre a aprovação de alguns criativos prévios em {guias}, extraia parâmetros de aprovação com base 
 nesses comentários e os salve em formato de texto para serem utilizados em análises futuras.''')
@@ -1371,6 +1374,27 @@ elif tipo_aprovacao == "Texto":
                 st.error(f"Ocorreu um erro ao processar o texto: {e}")
         else:
             st.warning("Por favor, insira um texto ou envie um arquivo para análise.")
+
+ elif tipo_aprovacao == "Conteúdo de Campanha":
+    descricao_campanha = st.text_area("Descreva brevemente a campanha desejada:")
+
+    if st.button("Gerar Conteúdo"):
+        if descricao_campanha.strip():
+            prompt_campanha = f"""
+            Você é um redator publicitário especializado.
+            Baseado na seguinte descrição: {descricao_campanha},
+            e considerando os parâmetros da Holambra ({guias_param}),
+            gere um texto de campanha atrativo e persuasivo sobre o tema {tema}.
+            """
+            try:
+                with st.spinner('Gerando conteúdo de campanha...'):
+                    resposta_campanha = modelo_texto.generate_content(prompt_campanha)
+                    st.subheader("Conteúdo de Campanha Gerado:")
+                    st.write(resposta_campanha.text)
+            except Exception as e:
+                st.error(f"Erro ao gerar conteúdo: {e}")
+        else:
+            st.warning("Por favor, insira uma descrição da campanha.")
 
 if st.button("Limpar e Reiniciar"):
     st.session_state.clear()
