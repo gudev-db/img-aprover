@@ -1341,6 +1341,8 @@ if tipo_aprovacao == "Imagem":
 
         - Não me repita de volta as diretrizes
         - Se alguma diretriz não se aplica a imagem, não a mencione
+
+        - Seu retorno devem ser apenas bullet points breves me dizendo o porque que a imagem seria aprovada ou não.
         
         """
 
