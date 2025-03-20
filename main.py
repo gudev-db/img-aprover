@@ -1385,6 +1385,16 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             Baseado na seguinte descrição: {descricao_campanha},
             e considerando os parâmetros da Holambra ({guias_param}),
             gere um texto de campanha atrativo e persuasivo.
+
+            # Imagens e vídeos
+            Você deve dar guias de como a imagem deve ser feita como se você estivesse conversando com um designer gráfico. Ele precisa de todas
+            as minuciosas diretrizes de como ele deve fazer seu trabalho.
+
+            # Descrições
+            Redija todo o texto que acompanha os criativos
+
+            # hashtags
+            Escolha bem as hashtags de uma forma que o conteúdo seja relevante e visível.
             """
             try:
                 with st.spinner('Gerando conteúdo de campanha...'):
