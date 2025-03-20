@@ -1342,6 +1342,10 @@ if tipo_aprovacao == "Imagem":
         - Você não deve me dizer que algo deve ser verificado. VOCÊ é quem verifica.
 
         - Seu retorno deve ser bullet points justificando o porque a imagem é aprovada ou não. Detalhando quais atributos da imagem subida não se alinham com as diretrizes do cliente
+
+
+        Siga esse fluxo:
+        Aprendizado com diretrizes > Análise da imagem > entendimento de se a imagem se alinha com as diretrizes > aprovação ou não da imagem com justificativas
         """
 
         try:
