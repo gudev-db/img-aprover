@@ -1260,7 +1260,6 @@ genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 
-st.text_input('Diga o tema de campanha')
 
 def extract_text_from_pptx(file):
     prs = Presentation(file)
@@ -1385,7 +1384,7 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             Você é um redator publicitário especializado.
             Baseado na seguinte descrição: {descricao_campanha},
             e considerando os parâmetros da Holambra ({guias_param}),
-            gere um texto de campanha atrativo e persuasivo sobre o tema {tema}.
+            gere um texto de campanha atrativo e persuasivo.
             """
             try:
                 with st.spinner('Gerando conteúdo de campanha...'):
