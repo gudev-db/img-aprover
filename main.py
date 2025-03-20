@@ -1301,7 +1301,7 @@ if tipo_aprovacao == "Imagem":
 
         prompt = f"""
         Você está avaliando uma imagem para campanhas da Holambra Cooperativa Agroindustrial.
-        Considere os seguintes parâmetros de aprovação de criativos do cliente Holambra: ({guias_param}).
+        Considere os seguintes parâmetros de aprovação de criativos do cliente: ({guias_param}).
         Se não o for, não as mencione.
 
         
