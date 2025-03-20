@@ -1384,7 +1384,31 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             Você é um redator publicitário especializado.
             Baseado na seguinte descrição: {descricao_campanha},
             e considerando os parâmetros da Holambra ({guias_param}),
-            gere um texto de campanha atrativo e persuasivo.
+            gere um texto de campanha atrativo e persuasivo. 
+
+            Considerando:
+            # Guias de Marca
+           - {guias_marca}
+           # Iconografia
+           - {iconografia}
+           # Fotografia
+           - {fotografia}
+           # Tipografia
+           - {tipografia}
+           # Layout
+           - {layout}
+           # Elementos gráficos
+           - {elemento_graf}
+           # Diretrizes sobre uso de degradê
+           - {degrade}
+           # Paleta de cores
+           - {cores}
+           # Símbolos
+           - {simbolo}
+           # Diretrizes de campanhas
+           - {campanhas}
+
+            Seja bem detalhista e verboso em suas descrições.
 
             # Imagens e vídeos
             Você deve dar guias de como a imagem deve ser feita como se você estivesse conversando com um designer gráfico. Ele precisa de todas
