@@ -1250,6 +1250,8 @@ Holambra Cooperativa Agroindustrial Brand Book 2021
 54 55 Fotografia Fotografia
 '''
 
+st.set_page_config(layout="wide")
+
 # Configuração do Gemini API
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
@@ -1279,7 +1281,6 @@ def extract_text_from_pdf(file):
             pages_text.append(text)
     return pages_text
 
-st.set_page_config(layout="wide")
 st.title("Aprovação de Imagens e Correção de Textos")
 
 tipo_aprovacao = st.selectbox("Selecione o tipo de conteúdo:", ["Imagem", "Texto", "Conteúdo de Campanha"])
