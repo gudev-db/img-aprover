@@ -1313,7 +1313,7 @@ if tipo_aprovacao == "Imagem":
         - {degrade}
         - {cores}
         - {simbolo}
-        - {campanha}
+        - {campanhas}
          
         Analise cada detalhe da imagem e forneça uma avaliação rigorosa, apontando se ela está aprovada ou o que precisa ser corrigido.
         """
