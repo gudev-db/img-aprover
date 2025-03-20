@@ -1332,7 +1332,12 @@ if tipo_aprovacao == "Imagem":
         # Diretrizes de campanhas
         - {campanhas}
          
-        Analise cada detalhe da imagem e forneça uma avaliação rigorosa, apontando se ela está aprovada ou o que precisa ser corrigido.
+
+        O Seu papel é pegar as diretrizes, analisar a imagem e, com base nelas, dizer se a imagen seria aprovada ou não e porquê.
+
+        - Não me repita de volta as diretrizes
+        - Se alguma diretriz não se aplica a imagem, não a mencione
+        - Analise a imagem por inteiro levando em conta as diretrizes.
         """
 
         try:
