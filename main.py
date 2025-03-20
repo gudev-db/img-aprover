@@ -1320,16 +1320,10 @@ if tipo_aprovacao == "Imagem":
         - {iconografia}
         # Fotografia
         - {fotografia}
-        # Tipografia
-        - {tipografia}
-        # Layout
-        - {layout}
+       
         # Elementos gráficos
         - {elemento_graf}
-        # Diretrizes sobre uso de degradê
-        - {degrade}
-        # Paleta de cores
-        - {cores}
+        
         # Símbolos
         - {simbolo}
         # Diretrizes de campanhas
