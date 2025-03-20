@@ -1415,7 +1415,7 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             Quais símbolos utilizar? O que utilizar das diretrizes da campanha nessa campanha? Você deve me dizer exatamente o que deve ser feito. Você é o criador
             com base no que você aprendeu. Não referencie os documentos de aprendizado na sua resposta. Você deve extrair o conteúdo delas, aprender o que a Holambra
             espera do uso de sua marca e construir os criativos de campanha. Não seja vago. Um designer gráfico deve poder ler a sua descrição se saber exatamente o que
-            deve ser feito. Traga palpabilidade na sua resposta.
+            deve ser feito. Traga palpabilidade na sua resposta. Descreva em parágrafos de 3 a 5 frases cada elemento que você traz.
 
             
             """
