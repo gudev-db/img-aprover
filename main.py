@@ -1413,7 +1413,8 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             exatamente o que deve ser feito. Qual imagem exata e detalhada para seguir o guia de marca? Quais icones usar? Como a fotografia deve ser?
             Qual tipografia usar? Como deve ser o layout? Quais elementos gráficos utilizar? Se usar degradê, como ele deve ser usado? Qual paleta de cor usar?
             Quais símbolos utilizar? O que utilizar das diretrizes da campanha nessa campanha? Você deve me dizer exatamente o que deve ser feito. Você é o criador
-            com base no que você aprendeu.
+            com base no que você aprendeu. Não referencie os documentos de aprendizado na sua resposta. Você deve extrair o conteúdo delas, aprender o que a Holambra
+            espera do uso de sua marca e construir os criativos de campanha.
 
             
             """
