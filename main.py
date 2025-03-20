@@ -1343,11 +1343,10 @@ if tipo_aprovacao == "Imagem":
 
         - Seu retorno deve ser bullet points justificando o porque a imagem é aprovada ou não. Detalhando quais atributos da imagem subida não se alinham com as diretrizes do cliente
 
-        - apresente sugestões de melhoria para a imagem ser aprovada
 
 
         Siga esse fluxo:
-        Aprendizado com diretrizes > Análise da imagem > entendimento de se a imagem se alinha com as diretrizes > aprovação ou não da imagem com justificativas > apresentação de sugestão de melhoria para aprovar a imagem
+        Aprendizado com diretrizes > Análise da imagem > entendimento de se a imagem se alinha com as diretrizes > aprovação ou não da imagem com justificativas 
         """
 
         try:
