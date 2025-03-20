@@ -1341,7 +1341,7 @@ if tipo_aprovacao == "Imagem":
         O Seu papel é pegar as diretrizes, analisar a imagem e, com base nelas, dizer se a imagen seria aprovada ou não e porquê.
 
         - Não me repita de volta as diretrizes
-        - Se alguma diretriz não se aplica a imagem, não a mencione
+        
         - Você não deve me dizer que algo deve ser verificado. VOCÊ é quem verifica.
 
         - Seu retorno devem ser apenas bullet points justificando o porque a imagem é aprovada ou não.
