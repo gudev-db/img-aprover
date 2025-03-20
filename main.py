@@ -1375,7 +1375,7 @@ elif tipo_aprovacao == "Texto":
         else:
             st.warning("Por favor, insira um texto ou envie um arquivo para análise.")
 
- elif tipo_aprovacao == "Conteúdo de Campanha":
+elif tipo_aprovacao == "Conteúdo de Campanha":
     descricao_campanha = st.text_area("Descreva brevemente a campanha desejada:")
 
     if st.button("Gerar Conteúdo"):
