@@ -1304,6 +1304,9 @@ if tipo_aprovacao == "Imagem":
 
         prompt = f"""
         Você está avaliando uma imagem para campanhas da Holambra Cooperativa Agroindustrial.
+        
+        Você é um especialista em design gráfico.
+        
         Considere os seguintes parâmetros de aprovação de criativos do cliente: ({guias_param}).
         Se não o for, não as mencione.
 
@@ -1332,12 +1335,13 @@ if tipo_aprovacao == "Imagem":
         # Diretrizes de campanhas
         - {campanhas}
          
-
+        - Analise a imagem por inteiro levando em conta as diretrizes.
+        
         O Seu papel é pegar as diretrizes, analisar a imagem e, com base nelas, dizer se a imagen seria aprovada ou não e porquê.
 
         - Não me repita de volta as diretrizes
         - Se alguma diretriz não se aplica a imagem, não a mencione
-        - Analise a imagem por inteiro levando em conta as diretrizes.
+        
         """
 
         try:
@@ -1424,7 +1428,7 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             espera do uso de sua marca e construir os criativos de campanha. Não seja vago. Um designer gráfico deve poder ler a sua descrição se saber exatamente o que
             deve ser feito. Traga palpabilidade na sua resposta. Descreva em parágrafos de 3 a 5 frases cada elemento que você traz.
 
-            Você não deve me falar sobre as diretrizes para a criação da campanha. Você me deve descrever como ela o é.
+            - Você não deve me falar sobre as diretrizes para a criação da campanha. Você me deve descrever como ela o é.
 
             
             """
