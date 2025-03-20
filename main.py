@@ -1337,12 +1337,12 @@ elif tipo_aprovacao == "Texto":
             prompt_texto = f"""
             Você é um revisor de textos altamente detalhista.
             Aqui está o material de referência extraído do arquivo enviado:
-            {texto_extraido if texto_extraido.strip() else "(Nenhum arquivo enviado)"}
+           {guias_marca}
             
             E aqui está o texto que precisa ser revisado:
             {texto_para_correcao}
 
-            Com base no material de referência, nos feedbacks prévios ({guias}) e no branding da Holambra, revise o texto e sugira melhorias para melhorar clareza, impacto e adequação ao contexto.
+            Com base no material de referência, nos feedbacks prévios ({guias} e {guias_marca}) e no branding da Holambra, revise o texto e sugira melhorias para melhorar clareza, impacto e adequação ao contexto.
             """
 
             try:
