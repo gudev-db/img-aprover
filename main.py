@@ -1414,7 +1414,8 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             Qual tipografia usar? Como deve ser o layout? Quais elementos gráficos utilizar? Se usar degradê, como ele deve ser usado? Qual paleta de cor usar?
             Quais símbolos utilizar? O que utilizar das diretrizes da campanha nessa campanha? Você deve me dizer exatamente o que deve ser feito. Você é o criador
             com base no que você aprendeu. Não referencie os documentos de aprendizado na sua resposta. Você deve extrair o conteúdo delas, aprender o que a Holambra
-            espera do uso de sua marca e construir os criativos de campanha.
+            espera do uso de sua marca e construir os criativos de campanha. Não seja vago. Um designer gráfico deve poder ler a sua descrição se saber exatamente o que
+            deve ser feito. Traga palpabilidade na sua resposta.
 
             
             """
