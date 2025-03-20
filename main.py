@@ -1408,7 +1408,9 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
            # Diretrizes de campanhas
            - {campanhas}
 
-            Seja bem detalhista ao mínimo detalhe, forneça todas e qualquer diretrizes na construção do conteúdo seja verboso em suas descrições.
+            Seja bem detalhista ao mínimo detalhe
+
+            
             Você não deve dizer que o criativo 'deve seguir os documentos fornecidos'. Com base no que você aprendeu com os ditos documentos, diga 
             exatamente o que deve ser feito. Qual imagem exata e detalhada para seguir o guia de marca? Quais icones usar? Como a fotografia deve ser?
             Qual tipografia usar? Como deve ser o layout? Quais elementos gráficos utilizar? Se usar degradê, como ele deve ser usado? Qual paleta de cor usar?
@@ -1417,7 +1419,7 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             espera do uso de sua marca e construir os criativos de campanha. Não seja vago. Um designer gráfico deve poder ler a sua descrição se saber exatamente o que
             deve ser feito. Traga palpabilidade na sua resposta. Descreva em parágrafos de 3 a 5 frases cada elemento que você traz.
 
-            Não me repita as diretrizes de aprendizado. Me traga o criativo de campanha que segue as diretrizes.
+            Você não deve me falar sobre as diretrizes para a criação da campanha. Você me deve descrever como ela o é.
 
             
             """
