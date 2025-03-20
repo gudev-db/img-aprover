@@ -1409,6 +1409,11 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
            - {campanhas}
 
             Seja bem detalhista ao mínimo detalhe, forneça todas e qualquer diretrizes na construção do conteúdo seja verboso em suas descrições.
+            Você não deve dizer que o criativo 'deve seguir os documentos fornecidos'. Com base no que você aprendeu com os ditos documentos, diga 
+            exatamente o que deve ser feito. Qual imagem exata e detalhada para seguir o guia de marca? Quais icones usar? Como a fotografia deve ser?
+            Qual tipografia usar? Como deve ser o layout? Quais elementos gráficos utilizar? Se usar degradê, como ele deve ser usado? Qual paleta de cor usar?
+            Quais símbolos utilizar? O que utilizar das diretrizes da campanha nessa campanha? Você deve me dizer exatamente o que deve ser feito. Você é o criador
+            com base no que você aprendeu.
 
             
             """
