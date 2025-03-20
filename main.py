@@ -1282,6 +1282,9 @@ st.title("Aprovação de Imagens e Correção de Textos")
 
 tipo_aprovacao = st.selectbox("Selecione o tipo de conteúdo a ser aprovado:", ["Imagem", "Texto"])
 
+guias_param = modelo_texto.generate_content(f'''O cliente Holambra enviou alguns comentários sobre a aprovação de alguns criativos prévios em {guias}, extraia parâmetros de aprovação com base 
+nesses comentários e os salve em formato de texto para serem utilizados em análises futuras.''')
+
 
 
 
@@ -1298,21 +1301,32 @@ if tipo_aprovacao == "Imagem":
 
         prompt = f"""
         Você está avaliando uma imagem para campanhas da Holambra Cooperativa Agroindustrial.
-        Considere os seguintes feedbacks anteriores do cliente e veja a imagem analisada é digna de algum escrúpulo de acordo com os guias. ({guias}).
+        Considere os seguintes parâmetros de aprovação de criativos do cliente Holambra: ({guias_param}).
         Se não o for, não as mencione.
 
         
         Além disso, aqui está o material de referência enviado para embasar sua análise (esse material se refere a como a marca deve se apresentar ao público. Veja se a imagem subida atende a 
-        esses requisitos.:
+        esses requisitos (analise atentamente a imagem subida para garantir que ela atende a essas diretrizes. Você deve analisar profundamente a imagem de uma forma que você possa dizer
+        com toda certeza se ela atente aos requisitos):
+        # Guias de Marca
         - {guias_marca}
+        # Iconografia
         - {iconografia}
+        # Fotografia
         - {fotografia}
+        # Tipografia
         - {tipografia}
+        # Layout
         - {layout}
+        # Elementos gráficos
         - {elemento_graf}
+        # Diretrizes sobre uso de degradê
         - {degrade}
+        # Paleta de cores
         - {cores}
+        # Símbolos
         - {simbolo}
+        # Diretrizes de campanhas
         - {campanhas}
          
         Analise cada detalhe da imagem e forneça uma avaliação rigorosa, apontando se ela está aprovada ou o que precisa ser corrigido.
@@ -1320,6 +1334,7 @@ if tipo_aprovacao == "Imagem":
 
         try:
             with st.spinner('Analisando a imagem...'):
+                
                 resposta = modelo_vision.generate_content(
                     contents=[prompt, {"mime_type": mime_type, "data": img_bytes}]
                 )
@@ -1347,6 +1362,7 @@ elif tipo_aprovacao == "Texto":
 
             try:
                 with st.spinner('Analisando e corrigindo o texto...'):
+                    
                     resposta_texto = modelo_texto.generate_content(prompt_texto)
                     texto_corrigido = resposta_texto.text
                     st.subheader("Texto Corrigido:")
