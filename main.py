@@ -1314,6 +1314,8 @@ if tipo_aprovacao == "Imagem":
         Além disso, aqui está o material de referência enviado para embasar sua análise (esse material se refere a como a marca deve se apresentar ao público. Veja se a imagem subida atende a 
         esses requisitos (analise atentamente a imagem subida para garantir que ela atende a essas diretrizes. Você deve analisar profundamente a imagem de uma forma que você possa dizer
         com toda certeza se ela atente aos requisitos):
+
+        BEGIN DIRETRIZES
         # Guias de Marca
         - {guias_marca}
         # Iconografia
@@ -1328,6 +1330,7 @@ if tipo_aprovacao == "Imagem":
         - {simbolo}
         # Diretrizes de campanhas
         - {campanhas}
+        END DIRETRIZES
          
         - Analise a imagem por inteiro levando em conta as diretrizes.
         - Analise e compreenda cada aspecto e elemento da imagem.
@@ -1338,7 +1341,7 @@ if tipo_aprovacao == "Imagem":
         
         - Você não deve me dizer que algo deve ser verificado. VOCÊ é quem verifica.
 
-        - Seu retorno devem ser apenas bullet points justificando o porque a imagem é aprovada ou não.
+        - Seu retorno deve ser bullet points justificando o porque a imagem é aprovada ou não. Detalhando quais atributos da imagem subida não se alinham com as diretrizes do cliente
         """
 
         try:
