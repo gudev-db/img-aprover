@@ -1407,7 +1407,9 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             Considerando as diretrizes de marca:
             {conteudo}
 
-            Seja bem detalhista ao mínimo detalhe
+            Seja bem detalhista.
+
+            Primeiramente, me descreva com exatidão, detalhe, investigatividade, palpabilidade, ao mínimo detalhe e em um parágrafo bem extenso, o que há na imagem e todos os atributos da imagem.
 
             
             Você não deve dizer que o criativo 'deve seguir os documentos fornecidos'. Com base no que você aprendeu com os ditos documentos, diga 
