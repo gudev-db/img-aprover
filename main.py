@@ -1260,6 +1260,10 @@ genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 
+with open('data.txt', 'r') as file:
+    # Lendo o conteúdo do arquivo e salvando em uma variável
+    conteudo = file.read()
+
 
 def extract_text_from_pptx(file):
     prs = Presentation(file)
@@ -1400,27 +1404,8 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             e considerando os parâmetros da Holambra ({guias_param}),
             gere um texto de campanha atrativo e persuasivo. 
 
-            Considerando:
-            # Guias de Marca
-           - {guias_marca}
-           # Iconografia
-           - {iconografia}
-           # Fotografia
-           - {fotografia}
-           # Tipografia
-           - {tipografia}
-           # Layout
-           - {layout}
-           # Elementos gráficos
-           - {elemento_graf}
-           # Diretrizes sobre uso de degradê
-           - {degrade}
-           # Paleta de cores
-           - {cores}
-           # Símbolos
-           - {simbolo}
-           # Diretrizes de campanhas
-           - {campanhas}
+            Considerando as diretrizes de marca:
+            {conteudo}
 
             Seja bem detalhista ao mínimo detalhe
 
