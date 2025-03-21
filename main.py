@@ -182,19 +182,7 @@ if tipo_aprovacao == "Imagem":
 
         BEGIN DIRETRIZES
         # Guias de Marca
-        - {guias_marca}
-        # Iconografia
-        - {iconografia}
-        # Fotografia
-        - {fotografia}
-       
-        # Elementos gráficos
-        - {elemento_graf}
-        
-        # Símbolos
-        - {simbolo}
-        # Diretrizes de campanhas
-        - {campanhas}
+
         END DIRETRIZES
          
         - Analise a imagem por inteiro levando em conta as diretrizes.
