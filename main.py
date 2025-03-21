@@ -265,9 +265,12 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             e considerando os parâmetros da Holambra ({guias_param}),
             gere um texto de campanha atrativo e persuasivo. 
 
-            Considerando as diretrizes de marca:
-            {conteudo}
+            for i in 100: aprenda com as diretrizes de aprovação: {conteudo}
 
+
+            
+            Após seu aprendizado:
+            
             Seja bem detalhista.
 
             Primeiramente, me descreva com exatidão, detalhe, investigatividade, palpabilidade, ao mínimo detalhe e em um parágrafo bem extenso, o que há na imagem e todos os atributos da imagem.
