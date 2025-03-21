@@ -255,24 +255,6 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
 
             aprenda com as diretrizes de aprovação: {conteudo}
 
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
-            aprenda com as diretrizes de aprovação: {conteudo}
-
 
             
             Após seu aprendizado:
