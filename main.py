@@ -253,7 +253,25 @@ elif tipo_aprovacao == "Conteúdo de Campanha":
             e considerando os parâmetros da Holambra ({guias_param}),
             gere um texto de campanha atrativo e persuasivo. 
 
-            for i in 100: aprenda com as diretrizes de aprovação: {conteudo}
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
+
+            aprenda com as diretrizes de aprovação: {conteudo}
 
 
             
