@@ -181,11 +181,19 @@ if tipo_aprovacao == "Imagem":
         com toda certeza se ela atente aos requisitos):
 
         BEGIN DIRETRIZES
-        # Guias de Marca
+        aprenda com as diretrizes de aprovação: {conteudo}
+
+
+            
+            Após seu aprendizado:
+            
+            Seja bem detalhista.
+
 
         END DIRETRIZES
          
-        - Analise a imagem por inteiro levando em conta as diretrizes.
+        - Primeiramente, me descreva com exatidão, detalhe, investigatividade, palpabilidade, ao mínimo detalhe e em um parágrafo bem extenso, o que há na imagem e todos os atributos da imagem.
+
         - Analise e compreenda cada aspecto e elemento da imagem.
         
         O Seu papel é pegar as diretrizes, analisar a imagem e, com base nelas, dizer se a imagen seria aprovada ou não e porquê.
