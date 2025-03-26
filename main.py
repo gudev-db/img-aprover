@@ -5,6 +5,12 @@ import pdfplumber
 import google.generativeai as genai
 import os
 from PIL import Image
+import os
+from dotenv import load_dotenv
+from langchain_astradb import AstraDBVectorStore
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+
 
 
 # Configuração inicial
@@ -17,7 +23,8 @@ st.image('assets/macLogo.png', width=300)
 
 st.header('Agente Holambra')
 st.header(' ')
-
+# Carrega variáveis de ambiente
+load_dotenv()
 
 
 gemini_api_key = os.getenv("GEM_API_KEY")
@@ -35,79 +42,112 @@ with open('data.txt', 'r') as file:
 # --- Abas Principais ---
 tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing = st.tabs(["💬 Chatbot Holambra", "✅ Aprovação de Conteúdo", "✨ Geração de Conteúdo","📋 Geração de Briefing Holambra"])
 
-with tab_chatbot:  # Note que agora temos uma lista de tabs
-    st.header("Assistente Virtual Holambra")
+
+
+# Configuração do Astra DB
+ASTRA_DB_API_ENDPOINT = os.getenv('ASTRA_DB_API_ENDPOINT')
+ASTRA_DB_APPLICATION_TOKEN = os.getenv('ASTRA_DB_APPLICATION_TOKEN')
+ASTRA_DB_NAMESPACE = os.getenv('ASTRA_DB_NAMESPACE')
+ASTRA_DB_COLLECTION = os.getenv('ASTRA_DB_COLLECTION')
+
+# Função para inicializar o vectorstore do Astra DB
+def get_astra_vectorstore():
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    
+    vectorstore = AstraDBVectorStore(
+        embedding=embeddings,
+        collection_name=ASTRA_DB_COLLECTION,
+        token=ASTRA_DB_APPLICATION_TOKEN,
+        api_endpoint=ASTRA_DB_API_ENDPOINT,
+        namespace=ASTRA_DB_NAMESPACE,
+    )
+    return vectorstore
+
+# Modificação na aba do chatbot para usar RAG com Astra DB
+with tab_chatbot:
+    st.header("Assistente Virtual Holambra (RAG)")
     st.caption("Pergunte qualquer coisa sobre as diretrizes e informações da Holambra")
     
-    # Inicializa o histórico de chat na session_state
+    # Inicializa o vectorstore uma vez
+    if "vectorstore" not in st.session_state:
+        with st.spinner("Conectando à base de conhecimento..."):
+            try:
+                st.session_state.vectorstore = get_astra_vectorstore()
+                st.success("Conexão com Astra DB estabelecida!")
+            except Exception as e:
+                st.error(f"Falha ao conectar ao Astra DB: {str(e)}")
+                st.session_state.vectorstore = None
+    
+    # Histórico de chat
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
-    # Exibe o histórico de mensagens
+    # Exibe mensagens anteriores
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
     # Input do usuário
     if prompt := st.chat_input("Como posso ajudar?"):
-        # Adiciona a mensagem do usuário ao histórico
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
         
-        # Prepara o contexto com as diretrizes
-        contexto = f"""
-        Você é um assistente virtual especializado na Holambra Cooperativa Agroindustrial.
-        Baseie todas as suas respostas nestas diretrizes oficiais:
-        {conteudo}
-        
-        Regras importantes:
-        - Seja preciso e técnico
-        - Mantenha o tom profissional mas amigável
-        - Se a pergunta for irrelevante, oriente educadamente
-        - Forneça exemplos quando útil
-        """
-        
-        # Gera a resposta do modelo
         with st.chat_message("assistant"):
-            with st.spinner('Pensando...'):
+            with st.spinner("Consultando base de conhecimento..."):
                 try:
-                    # Usa o histórico completo para contexto
-                    historico_formatado = "\n".join(
-                        [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
-                    )
+                    # 1. Busca de contexto no Astra DB
+                    if st.session_state.vectorstore:
+                        docs = st.session_state.vectorstore.similarity_search(prompt, k=3)
+                        contexto_rag = "\n\n".join([doc.page_content for doc in docs])
+                    else:
+                        contexto_rag = ""
                     
-                    resposta = modelo_texto.generate_content(
-                        f"{contexto}\n\nHistórico da conversa:\n{historico_formatado}\n\nResposta:"
-                    )
+                    # 2. Prepara o prompt completo
+                    prompt_completo = f"""
+                    Você é um assistente especializado na Holambra Cooperativa Agroindustrial.
                     
-                    # Exibe a resposta
-                    st.markdown(resposta.text)
+                    Contexto da base de conhecimento:
+                    {contexto_rag}
                     
-                    # Adiciona ao histórico
-                    st.session_state.messages.append({"role": "assistant", "content": resposta.text})
+                    Diretrizes gerais da marca:
+                    {conteudo}
+                    
+                    Histórico da conversa:
+                    {st.session_state.messages[-5:]}
+                    
+                    Pergunta atual: {prompt}
+                    
+                    Responda de forma:
+                    - Clara e técnica
+                    - Baseada nos documentos oficiais
+                    - Com referências às fontes quando aplicável
+                    - Limitada a 3 parágrafos
+                    """
+                    
+                    # 3. Gera a resposta
+                    resposta = modelo_texto.generate_content(prompt_completo)
+                    resposta_texto = resposta.text
+                    
+                    # 4. Exibe e armazena
+                    st.markdown(resposta_texto)
+                    st.session_state.messages.append({"role": "assistant", "content": resposta_texto})
                     
                 except Exception as e:
                     st.error(f"Erro ao gerar resposta: {str(e)}")
 
-# --- Estilização Adicional ---
+# Estilização adicional
 st.markdown("""
 <style>
+    .stChatInput {
+        position: fixed;
+        bottom: 20px;
+        width: calc(100% - 5rem);
+    }
     .stChatMessage {
         padding: 1rem;
         border-radius: 0.5rem;
         margin-bottom: 1rem;
-    }
-    [data-testid="stChatMessageContent"] {
-        font-size: 1rem;
-    }
-    [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] {
-        padding: 0.5rem 1rem;
-    }
-    .stChatInput {
-        bottom: 20px;
-        position: fixed;
-        width: calc(100% - 5rem);
     }
 </style>
 """, unsafe_allow_html=True)
