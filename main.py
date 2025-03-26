@@ -36,7 +36,7 @@ modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 with open('data.txt', 'r') as file:
     conteudo = file.read()
 
-tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_imagens = st.tabs([
+tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing = st.tabs([
     "💬 Chatbot Holambra", 
     "✅ Aprovação de Conteúdo", 
     "✨ Geração de Conteúdo",
