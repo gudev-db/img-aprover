@@ -6,6 +6,7 @@ import google.generativeai as genai
 import os
 from PIL import Image
 
+
 # Configuração inicial
 st.set_page_config(
     layout="wide",
@@ -17,11 +18,15 @@ st.image('assets/macLogo.png', width=300)
 st.header('Agente Holambra')
 st.header(' ')
 
-# Configuração da API Gemini
+
+
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
+
+
+
 
 # Carrega diretrizes
 with open('data.txt', 'r') as file:
@@ -82,72 +87,47 @@ with tab_aprovacao:
 
 with tab_geracao:
     st.header("Criação de Conteúdo")
+    campanha_brief = st.text_area("Briefing criativo:", help="Descreva objetivos, tom de voz e especificações", height=150)
     
-    # Subtabs para geração de conteúdo
-    subtab_ger1, subtab_ger2 = st.tabs(["📝 Gerar Texto", "🎨 Gerar Imagem"])
+    col1, col2 = st.columns(2)
     
-    with subtab_ger1:
-        st.subheader("Criação de Textos")
-        campanha_brief = st.text_area("Briefing criativo:", help="Descreva objetivos, tom de voz e especificações", height=150, key="text_brief")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if st.button("Gerar Copywriting", key="gen_copy"):
-                with st.spinner('Desenvolvendo conteúdo textual...'):
-                    prompt = f"""
-                    Crie textos para campanha considerando:
-                    Brief: {campanha_brief}
-                    Diretrizes: {conteudo}
-                    
-                    Entregar:
-                    - 🎯 3 opções de headline
-                    - 📝 Corpo de texto (200 caracteres)
-                    - 📢 2 variações de CTA
-                    - 🔍 Meta description (SEO)
-                    """
-                    resposta = modelo_texto.generate_content(prompt)
-                    st.subheader("Textos Gerados")
-                    st.markdown(resposta.text)
-        
-        with col2:
-            if st.button("Gerar Diretrizes de Estilo", key="gen_style"):
-                with st.spinner('Criando guia de estilo textual...'):
-                    prompt = f"""
-                    Crie diretrizes de estilo de escrita baseado em:
-                    Brief: {campanha_brief}
-                    Diretrizes: {conteudo}
-                    
-                    Inclua:
-                    - 🎭 Tom de voz recomendado
-                    - 📝 Estrutura de parágrafos
-                    - 🔤 Uso de vocabulário
-                    - ❌ Palavras e frases a evitar
-                    """
-                    resposta = modelo_texto.generate_content(prompt)
-                    st.subheader("Diretrizes de Estilo")
-                    st.markdown(resposta.text)
-    
-    with subtab_ger2:
-        st.subheader("Criação de Imagens")
-        descricao_imagem = st.text_area("Descreva a imagem desejada:", help="Inclua elementos, estilo, cores e composição", height=150, key="img_desc")
-        
-        if st.button("Gerar Diretrizes Visuais", key="gen_visual"):
-            with st.spinner('Criando especificações visuais...'):
+    with col1:
+        st.subheader("Diretrizes Visuais")
+
+        if st.button("Gerar Especificações", key="gen_visual"):
+            with st.spinner('Criando guia de estilo...'):
                 prompt = f"""
                 Crie um manual técnico para designers baseado em:
-                Descrição: {descricao_imagem}
+                Brief: {campanha_brief}
                 Diretrizes: {conteudo}
                 
                 Inclua:
                 1. 🎨 Paleta de cores (códigos HEX/RGB)
-                2. 🖼️ Estilo de composição
-                3. ✏️ Tipografia recomendada
-                4. 📐 Proporções e layout
+                2. 🖼️ Diretrizes de fotografia
+                3. ✏️ Tipografia hierárquica
+                4. 📐 Grid e proporções
                 5. ⚠️ Restrições de uso
                 """
                 resposta = modelo_texto.generate_content(prompt)
-                st.subheader("Diretrizes Visuais")
+                st.markdown(resposta.text)
+
+    with col2:
+        st.subheader("Copywriting")
+
+        if st.button("Gerar Textos", key="gen_copy"):
+            with st.spinner('Desenvolvendo conteúdo textual...'):
+                prompt = f"""
+                Crie textos para campanha considerando:
+                Brief: {campanha_brief}
+                Diretrizes: {conteudo}
+                
+                Entregar:
+                - 🎯 3 opções de headline
+                - 📝 Corpo de texto (200 caracteres)
+                - 📢 2 variações de CTA
+                - 🔍 Meta description (SEO)
+                """
+                resposta = modelo_texto.generate_content(prompt)
                 st.markdown(resposta.text)
 
 # --- Estilização ---
@@ -160,18 +140,8 @@ st.markdown("""
         border-left: 3px solid #4CAF50;
         padding-left: 1rem;
     }
-    /* Remove o efeito de hover dos botões */
     button[kind="secondary"] {
         background: #f0f2f6 !important;
-        transition: none !important;
-    }
-    button[kind="secondary"]:hover {
-        background: #f0f2f6 !important;
-        border-color: #f0f2f6 !important;
-    }
-    /* Estilo para as subtabs */
-    [data-testid="stHorizontalBlock"] {
-        gap: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
