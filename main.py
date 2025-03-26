@@ -446,7 +446,7 @@ with tab_imagens:
                     
                     data = {
                         "model": model,
-                        "prompt": f"Imagem no estilo da marca Holambra: {prompt}",
+                        "prompt": f"Imagem no estilo da marca Holambra (conforme {conteudo}): {prompt}",
                         "n": 1,
                         "size": size,
                         "quality": quality,
