@@ -5,7 +5,7 @@ import pdfplumber
 import google.generativeai as genai
 import os
 from PIL import Image
-import os
+import requests
 
 
 
