@@ -14,7 +14,7 @@ st.set_page_config(
 )
 st.image('assets/macLogo.png', width=300)
 
-st.header('Agente Holambra')
+st.header('Agente Holambra\n')
 
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
