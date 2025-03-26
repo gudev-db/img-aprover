@@ -33,10 +33,7 @@ with open('data.txt', 'r') as file:
     conteudo = file.read()
 
 # --- Abas Principais ---
-tab_chatbot, tab_aprovacao, tab_geracao = st.tabs(["💬 Chatbot Holambra", "✅ Aprovação de Conteúdo", "✨ Geração de Conteúdo"])
-
-# Adicione esta nova aba após as abas existentes (tab_aprovacao e tab_geracao)
-
+tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing = st.tabs(["💬 Chatbot Holambra", "✅ Aprovação de Conteúdo", "✨ Geração de Conteúdo","📋 Geração de Briefing Holambra"])
 
 with tab_chatbot:  # Note que agora temos uma lista de tabs
     st.header("Assistente Virtual Holambra")
@@ -225,6 +222,158 @@ st.markdown("""
     }
     button[kind="secondary"] {
         background: #f0f2f6 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+
+
+with tab_briefing:
+    st.header("Gerador de Briefing Holambra")
+    st.caption("Crie briefings completos para diferentes áreas de atuação da Holambra")
+    
+    # Setores específicos para Holambra
+    setores_holambra = [
+        "Marketing Digital", 
+        "Redes Sociais", 
+        "Campanhas Agrícolas", 
+        "Comunicação Institucional",
+        "Eventos e Feiras",
+        "Produtos Agrícolas",
+        "Relacionamento com Cooperados",
+        "Sustentabilidade"
+    ]
+    
+    # Layout em colunas
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        setor_selecionado = st.selectbox("Área de Atuação:", setores_holambra)
+        nome_projeto = st.text_input("Nome do Projeto:")
+        responsavel = st.text_input("Responsável pelo Briefing:")
+        data_entrega = st.date_input("Data de Entrega Prevista:")
+        
+        # Campos comuns a todos os setores
+        st.subheader("Informações Básicas")
+        contexto = st.text_area("Contexto/Justificativa:", help="Por que este projeto está sendo realizado?")
+        objetivos = st.text_area("Objetivos Principais:", help="O que se pretende alcançar com este projeto?")
+        publico_alvo = st.text_area("Público-Alvo:", help="Quem será impactado por este projeto?")
+        
+        # Campos específicos por setor
+        st.subheader("Informações Específicas")
+        if setor_selecionado == "Marketing Digital":
+            canais = st.multiselect("Canais Digitais:", ["Site", "Redes Sociais", "E-mail Marketing", "SEO", "ADS"])
+            metricas = st.text_input("Métricas de Sucesso:")
+        elif setor_selecionado == "Redes Sociais":
+            plataformas = st.multiselect("Plataformas:", ["Facebook", "Instagram", "LinkedIn", "YouTube", "Twitter"])
+            frequencia = st.selectbox("Frequência de Postagem:", ["Diária", "3x semana", "Semanal"])
+        elif setor_selecionado == "Campanhas Agrícolas":
+            cultura = st.text_input("Cultura Agrícola:")
+            periodo_safra = st.text_input("Período da Safra:")
+        elif setor_selecionado == "Comunicação Institucional":
+            tom_voz = st.selectbox("Tom de Voz:", ["Institucional", "Técnico", "Inspiracional", "Educativo"])
+        elif setor_selecionado == "Eventos e Feiras":
+            tipo_evento = st.selectbox("Tipo de Evento:", ["Feira Agrícola", "Dia de Campo", "Palestra Técnica", "Workshop"])
+            local = st.text_input("Local do Evento:")
+        elif setor_selecionado == "Produtos Agrícolas":
+            produto = st.text_input("Produto Foco:")
+            diferencial = st.text_area("Diferenciais Competitivos:")
+        elif setor_selecionado == "Relacionamento com Cooperados":
+            quantidade_cooperados = st.number_input("Número de Cooperados Impactados:", min_value=1)
+            canal_comunicacao = st.selectbox("Canal de Comunicação:", ["App", "Newsletter", "Reuniões", "WhatsApp"])
+        elif setor_selecionado == "Sustentabilidade":
+            iniciativa = st.selectbox("Tipo de Iniciativa:", ["Ambiental", "Social", "Econômica"])
+            certificacoes = st.text_input("Certificações Relacionadas:")
+    
+    with col2:
+        st.subheader("Preview do Briefing")
+        
+        if st.button("Gerar Briefing Completo", key="gen_briefing"):
+            with st.spinner('Construindo briefing personalizado...'):
+                try:
+                    # Template de briefing com placeholders
+                    prompt = f"""
+                    Crie um briefing profissional para a Holambra Cooperativa Agroindustrial seguindo rigorosamente este padrão:
+
+                    # BRIEFING {setor_selecionado.upper()} - HOLAMBRA
+                    **Projeto:** {nome_projeto}
+                    **Responsável:** {responsavel}
+                    **Data de Entrega:** {data_entrega}
+
+                    ## 1. CONTEXTO
+                    {contexto}
+
+                    ## 2. OBJETIVOS
+                    {objetivos}
+
+                    ## 3. PÚBLICO-ALVO
+                    {publico_alvo}
+
+                    ## 4. DIRETRIZES DA MARCA (Extraídas do data.txt)
+                    {conteudo}
+
+                    ## 5. INFORMAÇÕES ESPECÍFICAS
+                    {f"Canais: {', '.join(canais)} | Métricas: {metricas}" if setor_selecionado == "Marketing Digital" else ""}
+                    {f"Plataformas: {', '.join(plataformas)} | Frequência: {frequencia}" if setor_selecionado == "Redes Sociais" else ""}
+                    {f"Cultura: {cultura} | Safra: {periodo_safra}" if setor_selecionado == "Campanhas Agrícolas" else ""}
+                    {f"Tom de Voz: {tom_voz}" if setor_selecionado == "Comunicação Institucional" else ""}
+                    {f"Evento: {tipo_evento} | Local: {local}" if setor_selecionado == "Eventos e Feiras" else ""}
+                    {f"Produto: {produto} | Diferenciais: {diferencial}" if setor_selecionado == "Produtos Agrícolas" else ""}
+                    {f"Cooperados: {quantidade_cooperados} | Canal: {canal_comunicacao}" if setor_selecionado == "Relacionamento com Cooperados" else ""}
+                    {f"Iniciativa: {iniciativa} | Certificações: {certificacoes}" if setor_selecionado == "Sustentabilidade" else ""}
+
+                    ## 6. CRONOGRAMA PRELIMINAR
+                    - [ ] Definição de estratégia
+                    - [ ] Desenvolvimento de materiais
+                    - [ ] Aprovações
+                    - [ ] Implementação
+                    - [ ] Monitoramento
+
+                    ## 7. ORÇAMENTO
+                    A ser definido conforme escopo aprovado.
+
+                    ## 8. OBSERVAÇÕES
+                    Documento gerado automaticamente pelo sistema Macfor AutoDoc em {datetime.now().strftime('%d/%m/%Y %H:%M')}.
+
+                    IMPORTANTE:
+                    - Mantenha o formato profissional
+                    - Use linguagem clara e objetiva
+                    - Destaque os pontos críticos
+                    - Inclua todas as informações fornecidas
+                    - Considere as diretrizes da Holambra em todas as seções
+                    """
+
+                    resposta = modelo_texto.generate_content(prompt)
+                    
+                    st.subheader(f"Briefing {setor_selecionado} - {nome_projeto}")
+                    st.markdown(resposta.text)
+                    
+                    # Botão para download
+                    briefing_txt = resposta.text
+                    st.download_button(
+                        label="Download do Briefing",
+                        data=briefing_txt,
+                        file_name=f"briefing_holambra_{nome_projeto.lower().replace(' ', '_')}.txt",
+                        mime="text/plain"
+                    )
+                    
+                except Exception as e:
+                    st.error(f"Erro ao gerar briefing: {str(e)}")
+
+# Estilização adicional
+st.markdown("""
+<style>
+    div[data-testid="stTabs"] {
+        margin-top: -30px;
+    }
+    div[data-testid="stVerticalBlock"] > div:has(>.stTextArea) {
+        border-left: 3px solid #4CAF50;
+        padding-left: 1rem;
+    }
+    .stDownloadButton button {
+        background-color: #2e7d32 !important;
+        color: white !important;
     }
 </style>
 """, unsafe_allow_html=True)
