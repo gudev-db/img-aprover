@@ -20,3 +20,269 @@
 {"messages": [{"role": "system", "content": "Você é um assistente especializado em branding e identidade visual, com foco em estratégias de marca e design. Seja claro, objetivo e informativo."}, {"role": "user", "content": "Quais são as situações mais pertinentes para o uso do posicionamento 'Cultura de Qualidade'?"}, {"role": "assistant", "content": "O posicionamento 'Cultura de Qualidade' é mais pertinente em campanhas de mídia, ações de relacionamento com cooperados e parceiros, comunicações institucionais internas, esforços digitais de amplo alcance e ações de fomento ao pertencimento e à cultura. Em peças institucionais de longa vida ou posts digitais pontuais, o uso é menos indicado."}]}
 {"messages": [{"role": "system", "content": "Você é um assistente especializado em branding e identidade visual, com foco em estratégias de marca e design. Seja claro, objetivo e informativo."}, {"role": "user", "content": "Como deve ser a aplicação gráfica da assinatura 'Cultura de Qualidade'?"}, {"role": "assistant", "content": "A assinatura 'Cultura de Qualidade' deve ser aplicada em caixa alta e baixa, usando a fonte Gibson SemiBold, e sempre com ponto final. A cor da assinatura deve ser a mesma do logo, e não deve ser maior que o logotipo. O uso de outras fontes, cores diferentes ou caixa alta completa é proibido."}]}
 {"messages": [{"role": "system", "content": "Você é um assistente especializado em branding e identidade visual, com foco em estratégias de marca e design. Seja claro, objetivo e informativo."}, {"role": "user", "content": "Qual é o elemento gráfico extraído do símbolo da Holambra Cooperativa?"}, {"role": "assistant", "content": "O elemento gráfico extraído do símbolo da Holambra Cooperativa é a hélice de pás do moinho. Ela pode ser explorada de diversas formas, como cortes e close-ups, e usada em composições com fotos e cores. A hélice deve ser aplicada em 45 graus e pode ser animada (girando), desde que termine na posição inicial. Versões coloridas só podem ser usadas em fundo branco, enquanto a versão branca pode ser usada em fundos coloridos."}]}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em capacitação corporativa e comunicação institucional."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra estrutura seu programa de treinamento e comunicação em ESG?"
+    },
+    {
+      "role": "assistant",
+      "content": "A estrutura inclui:\n1. **Treinamentos**: \n   - Socialização (integração de novos colaboradores)\n   - Institucionalização (anual para todos)\n   - Específicos para gestores e cooperados\n2. **Mensuração**: \n   - Avaliações pós-treinamento e acompanhamento de métricas (horas investidas, % de participação)\n3. **Comunicação**: \n   - Parceria com marketing para conteúdos claros\n   - Canais dedicados (portal interno, newsletters)\nDetalhes estão no Plano Anual de Capacitação ESG."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor em gestão da qualidade e responsabilidade socioambiental de produtos."
+    },
+    {
+      "role": "user",
+      "content": "Qual a abordagem da Holambra para garantir a responsabilidade por seus produtos?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Cooperativa implementa: 1) Padrões de qualidade alinhados a regulamentações, 2) Programas de formação para cooperados em boas práticas (ex.: redução de resíduos), e 3) Metas de sustentabilidade mensuráveis. Políticas detalhadas estão disponíveis no Manual de Conformidade da Cooperativa, com evidências auditadas anualmente."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em gestão de metas e planos de ação com foco em sustentabilidade."
+    },
+    {
+      "role": "user",
+      "content": "Como a Cooperativa desdobra suas metas ESG em planos de ação?"
+    },
+    {
+      "role": "assistant",
+      "content": "O processo inclui: 1) Tradução de objetivos estratégicos em metas SMART vinculadas aos ODS, 2) Planos de ação com prazos e responsáveis definidos, e 3) Monitoramento contínuo via indicadores GRI. Exemplo: metas de redução de resíduos são desdobradas em programas de capacitação para cooperados e auditorias na cadeia de valor. Resultados são publicados anualmente no Relatório de Sustentabilidade."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor em estratégia corporativa e sustentabilidade, com expertise em frameworks como GRI e ODS."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra alinha seu posicionamento estratégico com os critérios ESG?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Holambra utiliza o **Global Reporting Initiative (GRI)** como referência para: 1) Definir objetivos estratégicos alinhados aos ODS, 2) Ajustar metas conforme diagnósticos da ABNT PR 2030, e 3) Validar seu posicionamento de mercado através de indicadores mensuráveis. A Jornada ESG serve como estrutura para garantir coerência entre ações e expectativas dos stakeholders."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor em planejamento estratégico e sustentabilidade corporativa."
+    },
+    {
+      "role": "user",
+      "content": "Qual a metodologia usada pela Holambra para integrar ESG ao planejamento estratégico?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Holambra utiliza a **ABNT PR 2030** como referência, com: 1) Diagnóstico de macro/microambiente, 2) Revisão de missão/visão/valores para alinhamento ESG, 3) Identificação de lacunas e oportunidades, e 4) Definição de metas mensuráveis. O processo é documentado no Planejamento Estratégico da Cooperativa, com indicadores atualizados anualmente."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em impacto social e desenvolvimento comunitário."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra mede seu impacto nas comunidades?"
+    },
+    {
+      "role": "assistant",
+      "content": "Através de: 1) Avaliação de impactos socioeconômicos (empregos gerados, capacitação local), 2) Programas de consumo consciente com cooperados, 3) Investimento em infraestrutura comunitária, e 4) Parcerias com instituições educacionais. A Cooperativa publica métricas anuais de desempenho social em sua plataforma ESG."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor em diversidade e relações com stakeholders."
+    },
+    {
+      "role": "user",
+      "content": "Quais são as políticas de diversidade e relacionamento com terceiros da Holambra?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Cooperativa adota: 1) Treinamentos em equidade e inclusão, 2) Critérios ESG na seleção de fornecedores, 3) Ações afirmativas para promoção da diversidade, e 4) Parcerias com comunidades locais. Para terceiros, há programas de capacitação em práticas sustentáveis e auditorias na cadeia de valor. Detalhes estão disponíveis no Relatório Anual de Sustentabilidade."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em gestão de pessoas e relações trabalhistas com foco em ESG."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra promove o bem-estar e a segurança dos colaboradores?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Holambra implementa: 1) Programas de qualidade de vida (horários flexíveis, suporte psicológico), 2) Políticas rigorosas de segurança no trabalho (EPIs e treinamentos), 3) Prevenção de assédio moral/sexual com canais de denúncia confidenciais, e 4) Conformidade social com auditorias periódicas. Todas as políticas estão documentadas no portal interno da Cooperativa."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor especializado em transparência corporativa e conformidade regulatória."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra garante transparência financeira e conformidade regulatória?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Holambra assegura transparência através de: 1) Demonstrações financeiras e relatórios anuais acessíveis, 2) Participação em iniciativas setoriais para melhores práticas, 3) Políticas claras de conformidade com regulamentações, e 4) Compromissos públicos com os ODS da ONU. Todas as informações estão disponíveis em canais dedicados da Cooperativa, com indicação das áreas responsáveis por cada processo."
+    }
+  ]
+}
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em gestão ambiental e sustentabilidade operacional."
+    },
+    {
+      "role": "user",
+      "content": "Quais são os componentes do Sistema de Gestão Ambiental da Holambra?"
+    },
+    {
+      "role": "assistant",
+      "content": "O Sistema inclui: 1) Conformidade com legislações ambientais, 2) Mapeamento de impactos ambientais, 3) Planejamento ambiental integrado, 4) Certificações reconhecidas, 5) Programas de educação ambiental, e 6) Instrumentos como AIA (Avaliação de Impacto Ambiental) e ACV (Análise de Ciclo de Vida). Cada processo tem áreas responsáveis definidas e documentação acessível aos stakeholders."
+    }
+  ]
+}
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor em ecoeficiência e gestão de recursos naturais."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra aborda a gestão de recursos hídricos e energéticos?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Cooperativa implementa: 1) Monitoramento de captação/consumo de água com ferramentas como pegada hídrica, 2) Medidas para mitigação em situações de risco hídrico, 3) Mapeamento do consumo energético com foco em eficiência, e 4) Adoção de fontes renováveis. Todos os processos são documentados com indicadores de desempenho e planos de ação para melhoria contínua."
+    }
+  ]
+}
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em economia circular e mudanças climáticas."
+    },
+    {
+      "role": "user",
+      "content": "Quais são as práticas da Holambra para redução de emissões e gestão de resíduos?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Holambra adota: 1) Inventário detalhado de GEE (Gases de Efeito Estufa), 2) Metas claras para redução de emissões, 3) Economia circular com reciclagem e reutilização de materiais, 4) Gestão integrada de resíduos na cadeia de valor, e 5) Mapeamento de riscos climáticos. As informações sobre desempenho e planos de ação estão disponíveis em plataformas centralizadas da Cooperativa."
+    }
+  ]
+}
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um assistente especializado em estratégia de marca e sustentabilidade corporativa, com foco em ESG e cooperativismo."
+    },
+    {
+      "role": "user",
+      "content": "Qual é a missão da Holambra Cooperativa em relação à sustentabilidade?"
+    },
+    {
+      "role": "assistant",
+      "content": "Nossa missão é promover prosperidade com ações que gerem impactos positivos nos âmbitos econômico, social, ambiental e de governança, garantindo a sustentabilidade do nosso ecossistema. Baseados nos valores do cooperativismo, buscamos um equilíbrio entre desenvolvimento econômico, inclusão social e proteção ambiental, elevando a qualidade de vida nas comunidades. Assim, incentivamos uma agricultura responsável, que preserva recursos, gera empregos e assegura um futuro próspero."
+    }
+  ]
+}
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um assistente especializado em ESG e desenvolvimento sustentável."
+    },
+    {
+      "role": "user",
+      "content": "O que é a Jornada ESG: Trilhas da Holambra?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Jornada ESG: Trilhas da Holambra é um processo que envolve todos os níveis da Cooperativa na construção de uma Cultura ESG alinhada ao nosso contexto. Ela integra os princípios cooperativistas com os Objetivos de Desenvolvimento Sustentável (ODS) da ONU, promovendo práticas sustentáveis em governança, relações com cooperados e gestão de impactos."
+    }
+  ]
+}
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um consultor especializado em governança corporativa e sustentabilidade."
+    },
+    {
+      "role": "user",
+      "content": "Quais são os principais componentes da Trilha de Governança da Jornada ESG?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Trilha de Governança da Jornada ESG inclui: 1) Gestão Integrada em ESG, 2) Análise de Impacto, 3) Análise de Materialidade, 4) Mapeamento de Riscos ESG, e 5) Relacionamento com Cooperados. Esses componentes visam avaliar impactos, identificar aspectos materiais, gerenciar riscos socioambientais e fortalecer a governança corporativa sustentável."
+    }
+  ]
+}
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Você é um especialista em gestão de stakeholders e diversidade corporativa."
+    },
+    {
+      "role": "user",
+      "content": "Como a Holambra aborda a diversidade e o relacionamento com stakeholders?"
+    },
+    {
+      "role": "assistant",
+      "content": "A Holambra promove ativamente a diversidade nos órgãos de governança e mantém canais de comunicação transparentes com stakeholders. As ações incluem: políticas de diversidade e inclusão, comitês de ética, canais de denúncia, mapeamento de partes interessadas e integração de stakeholders na estratégia ESG. A Cooperativa também assegura conformidade com a LGPD e políticas anticorrupção."
+    }
+  ]
+}
