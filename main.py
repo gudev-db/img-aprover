@@ -5,7 +5,7 @@ import pdfplumber
 import google.generativeai as genai
 import os
 from PIL import Image
-from google.generativeai.types import Tool, GenerateContentConfig, GoogleSearch
+from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
 
 # Configuração inicial
 st.set_page_config(
