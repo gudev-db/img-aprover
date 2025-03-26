@@ -128,6 +128,7 @@ st.markdown("""
 
 with tab_aprovacao:
     st.header("Validação de Materiais")
+    st.header(' ')
     subtab1, subtab2 = st.tabs(["🖼️ Análise de Imagens", "✍️ Revisão de Textos"])
     
     with subtab1:
@@ -178,6 +179,7 @@ with tab_aprovacao:
 
 with tab_geracao:
     st.header("Criação de Conteúdo")
+    st.header(' ')
     campanha_brief = st.text_area("Briefing criativo:", help="Descreva objetivos, tom de voz e especificações", height=150)
     
     col1, col2 = st.columns(2)
@@ -207,6 +209,7 @@ with tab_geracao:
 
     with col2:
         st.subheader("Copywriting")
+        st.header(' ')
 
         if st.button("Gerar Textos", key="gen_copy"):
             with st.spinner('Desenvolvendo conteúdo textual...'):
