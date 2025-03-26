@@ -13,7 +13,7 @@ import requests
 # Configuração inicial
 st.set_page_config(
     layout="wide",
-    page_title="Macfor AutoDoc",
+    page_title="Agente Holambra",
     page_icon="assets/page-icon.png"
 )
 st.image('assets/macLogo.png', width=300)
