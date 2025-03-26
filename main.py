@@ -45,7 +45,7 @@ tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing = st.tabs([
 
 
 with tab_chatbot:  
-    st.header("Assistente Virtual Holambra")
+    st.header("Chat Virtual Holambra")
     st.caption("Pergunte qualquer coisa sobre as diretrizes e informações da Holambra")
     
     # Inicializa o histórico de chat na session_state
