@@ -148,7 +148,8 @@ with tab_aprovacao:
                             Forneça um parecer técnico detalhado com:
                             - ✅ Acertos
                             - ❌ Desvios das diretrizes
-                            - 🛠 Recomendações precisas""",
+                            - 🛠 Recomendações precisas
+                            - Diga se a imagem é aprovada ou não""",
                             {"mime_type": "image/jpeg", "data": img_bytes.getvalue()}
                         ])
                         st.subheader("Resultado da Análise")
