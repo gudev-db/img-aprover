@@ -13,11 +13,7 @@ st.set_page_config(
     page_icon="assets/page-icon.png"
 )
 st.image('assets/macLogo.png', width=300)
-st.text(
-        "Empoderada por IA, a Macfor conta com um sistema gerador de documentos "
-        "automatizado movido por agentes de inteligência artificial."
-        "Foque o seu trabalho em seu diferencial humano e automatize tarefas repetitivas!"
-    )
+
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
