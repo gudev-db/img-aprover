@@ -134,10 +134,8 @@ if tipo_aprovacao == "Imagem":
 
         BEGIN DIRETRIZES
         aprenda com as diretrizes de aprovação: {conteudo}
-
         END DIRETRIZES
          
-        - Primeiramente, me descreva com exatidão, detalhe, investigatividade, palpabilidade, ao mínimo detalhe e em um parágrafo bem extenso, o que há na imagem e todos os atributos da imagem.
 
         - Analise e compreenda cada aspecto e elemento da imagem.
         
