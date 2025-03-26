@@ -14,6 +14,8 @@ st.set_page_config(
 )
 st.image('assets/macLogo.png', width=300)
 
+st.header('Agente Holambra')
+
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
