@@ -5,7 +5,6 @@ import pdfplumber
 import google.generativeai as genai
 import os
 from PIL import Image
-from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
 
 
 # Configuração inicial
@@ -25,9 +24,7 @@ gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
-google_search_tool = Tool(
-                            google_search = GoogleSearch()
-                        )
+
 
 
 
@@ -96,15 +93,7 @@ with tab_geracao:
     
     with col1:
         st.subheader("Diretrizes Visuais")
-        novids = st.text_input('Quais tendências de mercado deseja incluir no criativo?')
-        novids = client.models.generate_content(
-                            model=model_id,
-                            contents=f'''Novidades e inovações e tendências no ramo de atuação: {ramo_atuacao}?''',
-                            config=GenerateContentConfig(
-                                tools=[google_search_tool],
-                                response_modalities=["TEXT"],
-                            )
-                        )
+
         if st.button("Gerar Especificações", key="gen_visual"):
             with st.spinner('Criando guia de estilo...'):
                 prompt = f"""
@@ -124,15 +113,7 @@ with tab_geracao:
 
     with col2:
         st.subheader("Copywriting")
-        novids = st.text_input('Quais tendências de mercado deseja incluir no criativo?')
-        novids = client.models.generate_content(
-                            model=model_id,
-                            contents=f'''Novidades e inovações e tendências no ramo de atuação: {ramo_atuacao}?''',
-                            config=GenerateContentConfig(
-                                tools=[google_search_tool],
-                                response_modalities=["TEXT"],
-                            )
-                        )
+
         if st.button("Gerar Textos", key="gen_copy"):
             with st.spinner('Desenvolvendo conteúdo textual...'):
                 prompt = f"""
