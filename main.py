@@ -97,6 +97,8 @@ with tab_geracao:
         if st.button("Gerar Especificações", key="gen_visual"):
             with st.spinner('Criando guia de estilo...'):
                 prompt = f"""
+                Você é um designer que trabalha para a Macfor Marketing digital e você deve gerar conteúdo criativo para o cliente Holambra Cooperativa Agroindustrial.
+                
                 Crie um manual técnico para designers baseado em:
                 Brief: {campanha_brief}
                 Diretrizes: {conteudo}
