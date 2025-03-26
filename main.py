@@ -17,103 +17,114 @@ modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 with open('data.txt', 'r') as file:
     conteudo = file.read()
 
-# --- Seção 1: Aprovação de Conteúdo ---
-st.header("📋 Aprovação de Conteúdo")
-tab1, tab2 = st.tabs(["🖼️ Imagens", "✍️ Textos"])
+# --- Abas Principais ---
+tab_aprovacao, tab_geracao = st.tabs(["✅ Aprovação de Conteúdo", "✨ Geração de Conteúdo"])
 
-with tab1:
-    uploaded_image = st.file_uploader("Envie a imagem para análise (.jpg, .png)", type=["jpg", "jpeg", "png"])
-    if uploaded_image:
-        st.image(uploaded_image, use_column_width=True)
-        if st.button("Analisar Imagem", key="analyze_img"):
-            with st.spinner('Validando contra as diretrizes da Holambra...'):
-                try:
-                    image = Image.open(uploaded_image)
-                    img_bytes = io.BytesIO()
-                    image.save(img_bytes, format=image.format)
+with tab_aprovacao:
+    st.header("Validação de Materiais")
+    subtab1, subtab2 = st.tabs(["🖼️ Análise de Imagens", "✍️ Revisão de Textos"])
+    
+    with subtab1:
+        uploaded_image = st.file_uploader("Carregue imagem para análise (.jpg, .png)", type=["jpg", "jpeg", "png"], key="img_uploader")
+        if uploaded_image:
+            st.image(uploaded_image, use_column_width=True, caption="Pré-visualização")
+            if st.button("Validar Imagem", key="analyze_img"):
+                with st.spinner('Comparando com diretrizes da marca...'):
+                    try:
+                        image = Image.open(uploaded_image)
+                        img_bytes = io.BytesIO()
+                        image.save(img_bytes, format=image.format)
+                        
+                        resposta = modelo_vision.generate_content([
+                            f"""Analise esta imagem considerando:
+                            {conteudo}
+                            Forneça um parecer técnico detalhado com:
+                            - ✅ Acertos
+                            - ❌ Desvios das diretrizes
+                            - 🛠 Recomendações precisas""",
+                            {"mime_type": "image/jpeg", "data": img_bytes.getvalue()}
+                        ])
+                        st.subheader("Resultado da Análise")
+                        st.markdown(resposta.text)
+                    except Exception as e:
+                        st.error(f"Falha na análise: {str(e)}")
+
+    with subtab2:
+        texto_input = st.text_area("Insira o texto para validação:", height=200, key="text_input")
+        if st.button("Validar Texto", key="validate_text"):
+            with st.spinner('Verificando conformidade...'):
+                resposta = modelo_texto.generate_content(
+                    f"""Revise este texto conforme:
+                    Diretrizes: {conteudo}
+                    Texto: {texto_input}
                     
-                    resposta = modelo_vision.generate_content([
-                        f"""Analise esta imagem considerando rigorosamente:
-                        {conteudo}
-                        Forneça um parecer técnico com:
-                        - ✅ Pontos de conformidade
-                        - ❌ Não-conformidades críticas
-                        - 🛠 Sugestões de ajustes específicos
-                        """,
-                        {"mime_type": "image/jpeg", "data": img_bytes.getvalue()}
-                    ])
-                    st.subheader("Laudo Técnico")
-                    st.markdown(resposta.text)
-                except Exception as e:
-                    st.error(f"Erro na análise: {str(e)}")
+                    Formato requerido:
+                    ### Texto Ajustado
+                    [versão reformulada]
+                    
+                    ### Alterações Realizadas
+                    - [lista itemizada de modificações]
+                    ### Justificativas
+                    [explicação técnica das mudanças]"""
+                )
+                st.subheader("Versão Validada")
+                st.markdown(resposta.text)
 
-with tab2:
-    texto_input = st.text_area("Cole o texto para validação:", height=200)
-    if st.button("Validar Texto", key="validate_text"):
-        with st.spinner('Cross-check com guias da marca...'):
-            resposta = modelo_texto.generate_content(
-                f"""Revise este texto conforme as diretrizes da Holambra:
+with tab_geracao:
+    st.header("Criação de Conteúdo")
+    campanha_brief = st.text_area("Briefing criativo:", help="Descreva objetivos, tom de voz e especificações", height=150)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Diretrizes Visuais")
+        if st.button("Gerar Especificações", key="gen_visual"):
+            with st.spinner('Criando guia de estilo...'):
+                prompt = f"""
+                Crie um manual técnico para designers baseado em:
+                Brief: {campanha_brief}
                 Diretrizes: {conteudo}
-                Texto a revisar: {texto_input}
                 
-                Formato de resposta:
-                ### Versão Ajustada
-                [texto reformulado]
-                
-                ### Alterações Realizadas
-                - [lista de mudanças com justificativas]
+                Inclua:
+                1. 🎨 Paleta de cores (códigos HEX/RGB)
+                2. 🖼️ Diretrizes de fotografia
+                3. ✏️ Tipografia hierárquica
+                4. 📐 Grid e proporções
+                5. ⚠️ Restrições de uso
                 """
-            )
-            st.subheader("Texto Otimizado")
-            st.markdown(resposta.text)
+                resposta = modelo_texto.generate_content(prompt)
+                st.markdown(resposta.text)
 
-# --- Seção 2: Geração de Conteúdo ---
-st.header("✨ Geração de Conteúdo")
-campanha_brief = st.text_area("Briefing da Campanha:", help="Descreva objetivos, público-alvo e tom desejado")
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("Gerar Conceito Visual", key="gen_visual"):
-        with st.spinner('Criando diretrizes visuais...'):
-            prompt = f"""
-            Crie especificações técnicas para designers baseadas em:
-            Brief: {campanha_brief}
-            Diretrizes: {conteudo}
-            
-            Inclua:
-            1. 🎨 Paleta de cores exata (códigos HEX)
-            2. 📐 Layout recomendado 
-            3. 🖼️ Estilo fotográfico 
-            4. ✨ Elementos gráficos obrigatórios
-            5. ⚠️ Restrições criativas
-            """
-            resposta = modelo_texto.generate_content(prompt)
-            st.subheader("Blueprint Visual")
-            st.markdown(resposta.text)
-
-with col2:
-    if st.button("Gerar Copywriting", key="gen_copy"):
-        with st.spinner('Desenvolvendo textos...'):
-            prompt = f"""
-            Crie textos para campanha alinhados a:
-            Brief: {campanha_brief}
-            Diretrizes: {conteudo}
-            
-            Entregue:
-            - 🎯 Headline principal (3 opções)
-            - 📝 Corpo de texto (tom {campanha_brief.split()[-1] if campanha_brief else 'inspiracional'})
-            - 📢 Call-to-action (2 variações)
-            """
-            resposta = modelo_texto.generate_content(prompt)
-            st.subheader("Textos Prontos")
-            st.markdown(resposta.text)
+    with col2:
+        st.subheader("Copywriting")
+        if st.button("Gerar Textos", key="gen_copy"):
+            with st.spinner('Desenvolvendo conteúdo textual...'):
+                prompt = f"""
+                Crie textos para campanha considerando:
+                Brief: {campanha_brief}
+                Diretrizes: {conteudo}
+                
+                Entregar:
+                - 🎯 3 opções de headline
+                - 📝 Corpo de texto (200 caracteres)
+                - 📢 2 variações de CTA
+                - 🔍 Meta description (SEO)
+                """
+                resposta = modelo_texto.generate_content(prompt)
+                st.markdown(resposta.text)
 
 # --- Estilização ---
 st.markdown("""
 <style>
-    [data-testid="stHeader"] {background-color: #f5f5f5;}
-    .st-bb {background-color: #f0f2f6;}
-    .st-at {background-color: #4CAF50;}
-    .st-ae {border-color: #4CAF50;}
+    div[data-testid="stTabs"] {
+        margin-top: -30px;
+    }
+    div[data-testid="stVerticalBlock"] > div:has(>.stTextArea) {
+        border-left: 3px solid #4CAF50;
+        padding-left: 1rem;
+    }
+    button[kind="secondary"] {
+        background: #f0f2f6 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
