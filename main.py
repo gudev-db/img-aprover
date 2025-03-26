@@ -36,10 +36,13 @@ modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 with open('data.txt', 'r') as file:
     conteudo = file.read()
 
-# --- Abas Principais ---
-tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing = st.tabs(["💬 Chatbot Holambra", "✅ Aprovação de Conteúdo", "✨ Geração de Conteúdo","📋 Geração de Briefing Holambra"])
-
-
+tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_imagens = st.tabs([
+    "💬 Chatbot Holambra", 
+    "✅ Aprovação de Conteúdo", 
+    "✨ Geração de Conteúdo",
+    "📋 Geração de Briefing Holambra",
+    "🎨 Geração de Imagens"
+])
 
 
 with tab_chatbot:  
@@ -384,3 +387,96 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Adicione esta nova seção para a aba de geração de imagens
+with tab_imagens:
+    st.header("Gerador de Imagens com DALL-E")
+    st.caption("Crie imagens personalizadas para campanhas da Holambra")
+    
+    # Configuração da API - já temos no início do código
+    
+    # Layout em colunas
+    col_config, col_preview = st.columns([1, 2])
+    
+    with col_config:
+        # Configurações da imagem
+        with st.expander("⚙️ Configurações Avançadas"):
+            model = st.selectbox(
+                "Modelo",
+                ["dall-e-3", "dall-e-2"],
+                index=0,
+                help="DALL-E 3 oferece melhor qualidade de imagem"
+            )
+            
+            size = st.selectbox(
+                "Tamanho",
+                ["1024x1024", "1024x1792", "1792x1024"],
+                help="Proporções da imagem gerada"
+            )
+            
+            quality = st.selectbox(
+                "Qualidade",
+                ["standard", "hd"],
+                help="HD tem melhor qualidade mas custa mais"
+            )
+            
+            style = st.selectbox(
+                "Estilo",
+                ["vivid", "natural"],
+                help="Vivid: mais dramático e saturado | Natural: mais realista"
+            )
+    
+    # Área principal
+    prompt = st.text_area(
+        "Descrição detalhada da imagem desejada:",
+        height=200,
+        placeholder="Descreva com riqueza de detalhes a imagem que deseja gerar. Inclua estilo, elementos visuais, cores e atmosfera."
+    )
+    
+    if st.button("✨ Gerar Imagem", type="primary"):
+        if not prompt.strip():
+            st.warning("Por favor, insira uma descrição para gerar a imagem")
+        else:
+            with st.spinner("Criando sua imagem... Isso pode levar alguns segundos"):
+                try:
+                    headers = {
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}"
+                    }
+                    
+                    data = {
+                        "model": model,
+                        "prompt": f"Imagem no estilo da marca Holambra: {prompt}",
+                        "n": 1,
+                        "size": size,
+                        "quality": quality,
+                        "style": style,
+                        "response_format": "url"
+                    }
+                    
+                    response = requests.post(
+                        "https://api.openai.com/v1/images/generations",
+                        headers=headers,
+                        json=data
+                    )
+                    
+                    if response.status_code == 200:
+                        image_url = response.json()["data"][0]["url"]
+                        
+                        with col_preview:
+                            st.success("Imagem gerada com sucesso!")
+                            st.image(image_url, caption="Imagem gerada por DALL-E", use_column_width=True)
+                            
+                            # Opções de download
+                            st.download_button(
+                                label="⬇️ Baixar Imagem",
+                                data=requests.get(image_url).content,
+                                file_name=f"holambra_{prompt[:20].replace(' ', '_')}.png",
+                                mime="image/png"
+                            )
+                            st.markdown(f"**URL da Imagem:** `{image_url}`")
+                    else:
+                        st.error(f"Erro na geração: {response.text}")
+                        
+                except Exception as e:
+                    st.error(f"Falha ao gerar imagem: {str(e)}")
