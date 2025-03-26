@@ -333,8 +333,7 @@ with tab_briefing:
                     ## 7. ORÇAMENTO
                     A ser definido conforme escopo aprovado.
 
-                    ## 8. OBSERVAÇÕES
-                    Documento gerado automaticamente pelo sistema Macfor AutoDoc em {datetime.now().strftime('%d/%m/%Y %H:%M')}.
+                    
 
                     IMPORTANTE:
                     - Mantenha o formato profissional
