@@ -209,7 +209,6 @@ with tab_geracao:
 
     with col2:
         st.subheader("Copywriting")
-        st.header(' ')
 
         if st.button("Gerar Textos", key="gen_copy"):
             with st.spinner('Desenvolvendo conteúdo textual...'):
