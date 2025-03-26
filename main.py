@@ -182,15 +182,6 @@ if tipo_aprovacao == "Imagem":
 
         BEGIN DIRETRIZES
         aprenda com as diretrizes de aprovação: {conteudo}
-        aprenda com as diretrizes de aprovação: {conteudo}
-        aprenda com as diretrizes de aprovação: {conteudo}
-        aprenda com as diretrizes de aprovação: {conteudo}
-        aprenda com as diretrizes de aprovação: {conteudo}
-        aprenda com as diretrizes de aprovação: {conteudo}
-        aprenda com as diretrizes de aprovação: {conteudo}
-
-            
-
 
         END DIRETRIZES
          
