@@ -145,7 +145,7 @@ def extract_text_from_pdf(file):
             pages_text.append(text)
     return pages_text
 
-st.title("Aprovação de Imagens e Correção de Textos")
+st.title("Agente Holambra")
 
 tipo_aprovacao = st.selectbox("Selecione o tipo de conteúdo:", ["Imagem", "Texto", "Conteúdo de Campanha"])
 
