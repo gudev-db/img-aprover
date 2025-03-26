@@ -107,6 +107,7 @@ with tab_geracao:
                 3. ✏️ Tipografia hierárquica
                 4. 📐 Grid e proporções
                 5. ⚠️ Restrições de uso
+                6. Descrição exata e palpável da imagem a ser utilizada no criativo que atenda a todas as guias acima
                 """
                 resposta = modelo_texto.generate_content(prompt)
                 st.markdown(resposta.text)
