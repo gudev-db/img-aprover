@@ -36,11 +36,12 @@ modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 with open('data.txt', 'r') as file:
     conteudo = file.read()
 
-tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing = st.tabs([
+tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_resumo = st.tabs([
     "💬 Chatbot Holambra", 
     "✅ Aprovação de Conteúdo", 
     "✨ Geração de Conteúdo",
-    "📋 Geração de Briefing Holambra"
+    "📋 Geração de Briefing Holambra",
+    "📝 Resumo de Textos"
 ])
 
 
@@ -858,3 +859,90 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+with tab_resumo:
+    st.header("Resumo de Textos")
+    st.caption("Resuma textos longos mantendo o alinhamento com as diretrizes da Holambra")
+    
+    # Layout em colunas
+    col_original, col_resumo = st.columns(2)
+    
+    with col_original:
+        st.subheader("Texto Original")
+        texto_original = st.text_area(
+            "Cole o texto que deseja resumir:",
+            height=400,
+            placeholder="Insira aqui o texto completo que precisa ser resumido..."
+        )
+        
+        # Configurações do resumo
+        with st.expander("⚙️ Configurações do Resumo"):
+            nivel_resumo = st.select_slider(
+                "Nível de Resumo:",
+                options=["Extenso", "Moderado", "Conciso"],
+                value="Moderado"
+            )
+            
+            incluir_pontos = st.checkbox(
+                "Incluir pontos-chave em tópicos",
+                value=True
+            )
+            
+            manter_terminologia = st.checkbox(
+                "Manter terminologia técnica",
+                value=True
+            )
+    
+    with col_resumo:
+        st.subheader("Resumo Gerado")
+        
+        if st.button("Gerar Resumo", key="gerar_resumo"):
+            if not texto_original.strip():
+                st.warning("Por favor, insira um texto para resumir")
+            else:
+                with st.spinner("Processando resumo..."):
+                    try:
+                        # Configura o prompt de acordo com as opções selecionadas
+                        config_resumo = {
+                            "Extenso": "um resumo detalhado mantendo cerca de 50% do conteúdo original",
+                            "Moderado": "um resumo conciso mantendo cerca de 30% do conteúdo original",
+                            "Conciso": "um resumo muito breve com apenas os pontos essenciais (cerca de 10-15%)"
+                        }[nivel_resumo]
+                        
+                        prompt = f"""
+                        Crie um resumo profissional deste texto para a Holambra Cooperativa Agroindustrial,
+                        seguindo rigorosamente estas diretrizes da marca:
+                        {conteudo}
+                        
+                        Requisitos:
+                        - {config_resumo}
+                        - {"Inclua os principais pontos em tópicos" if incluir_pontos else "Formato de texto contínuo"}
+                        - {"Mantenha a terminologia técnica específica" if manter_terminologia else "Simplifique a linguagem"}
+                        - Priorize informações relevantes para o agronegócio
+                        - Mantenha o tom profissional da Holambra
+                        - Adapte para o público-alvo da cooperativa
+                        
+                        Texto para resumir:
+                        {texto_original}
+                        
+                        Estrutura do resumo:
+                        1. Título do resumo
+                        2. {"Principais pontos em tópicos (se aplicável)" if incluir_pontos else "Resumo textual"}
+                        3. Conclusão/Recomendações
+                        """
+                        
+                        resposta = modelo_texto.generate_content(prompt)
+                        
+                        # Exibe o resultado
+                        st.markdown(resposta.text)
+                        
+                        # Botão para copiar
+                        st.download_button(
+                            "📋 Copiar Resumo",
+                            data=resposta.text,
+                            file_name="resumo_holambra.txt",
+                            mime="text/plain"
+                        )
+                        
+                    except Exception as e:
+                        st.error(f"Erro ao gerar resumo: {str(e)}")
