@@ -68,7 +68,7 @@ with tab_chatbot:
         # Prepara o contexto com as diretrizes
         contexto = f"""
         Você é um assistente virtual especializado na Holambra Cooperativa Agroindustrial.
-        Baseie todas as suas respostas nestas diretrizes oficiais:
+        Baseie todas as suas respostas nestas diretrizes oficiais da Holambra Cooperativa Agroindustrial:
         {conteudo}
 
 
@@ -198,6 +198,10 @@ with tab_geracao:
                 Crie um manual técnico para designers baseado em:
                 Brief: {campanha_brief}
                 Diretrizes: {conteudo}
+
+                - Quando o usuário fala Holambra, ele está se referindo a Holambra Cooperativa Agroindustrial
+                - NÃO HÁ conexão entre a Holambra Cooperativa Agroindustrial e as flores Holambra
+                - Nunca fale sobre flores Holambra ou cidade Holambra
                 
                 Inclua:
                 1. 🎨 Paleta de cores (códigos HEX/RGB)
@@ -219,6 +223,10 @@ with tab_geracao:
                 Crie textos para campanha considerando:
                 Brief: {campanha_brief}
                 Diretrizes: {conteudo}
+
+                - Quando o usuário fala Holambra, ele está se referindo a Holambra Cooperativa Agroindustrial
+                - NÃO HÁ conexão entre a Holambra Cooperativa Agroindustrial e as flores Holambra
+                - Nunca fale sobre flores Holambra ou cidade Holambra
                 
                 Entregar:
                 - 🎯 3 opções de headline
