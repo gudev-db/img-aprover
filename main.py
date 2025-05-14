@@ -314,6 +314,7 @@ with tab_briefing:
         responsavel = st.text_input("Responsável pelo Briefing:")
         data_entrega = st.date_input("Data de Entrega Prevista:")
         objetivo_geral = st.text_area("Objetivo Geral:")
+        campos_mais = st.text_area("Informações a mais para o briefing")
         
         # Seção dinâmica baseada no tipo de briefing
         st.subheader("Informações Específicas")
@@ -559,6 +560,7 @@ with tab_briefing:
                         "",
                         "## 1. INFORMAÇÕES BÁSICAS",
                         f"**Objetivo Geral:** {objetivo_geral}",
+                        f"**Informações extras para o briefing** {campos_mais}",
                         "",
                         "## 2. INFORMAÇÕES ESPECÍFICAS"
                     ]
