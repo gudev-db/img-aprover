@@ -9,7 +9,8 @@ import requests
 import asyncio
 from crawl4ai import *
 import requests
-
+import json
+from dotenv import load_dotenv
 
 
 
@@ -93,28 +94,36 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # Use pure HTTP requests as fallback
-                        import requests
-                        from bs4 import BeautifulSoup
+                        # LangSearch API implementation
+                        url = "https://api.langsearch.com/v1/web-search"
+                        payload = json.dumps({
+                            "query": f"{prompt} site:holambra.com.br",
+                            "freshness": "noLimit",
+                            "summary": True,
+                            "count": 3  # Get top 3 results
+                        })
+                        headers = {
+                            'Authorization': f'Bearer {LANGS_KEY}',
+                            'Content-Type': 'application/json'
+                        }
                         
-                        def simple_web_search(query):
-                            try:
-                                response = requests.get(
-                                    "https://www.bing.com/search",
-                                    params={"q": f"{query} site:holambra.com.br"},
-                                    headers={"User-Agent": "Mozilla/5.0"},
-                                    timeout=100
-                                )
-                                soup = BeautifulSoup(response.text, 'html.parser')
-                                results = []
-                                for h2 in soup.find_all('h2'):
-                                    if h2.text.strip() and not h2.text.startswith(('Web Results', 'Related Searches')):
-                                        results.append(h2.text.strip())
-                                return "\n".join(results[:3]) if results else "Nenhum resultado encontrado"
-                            except Exception as e:
-                                return f"Erro na busca: {str(e)}"
+                        try:
+                            response = requests.post(url, headers=headers, data=payload, timeout=10)
+                            response.raise_for_status()
+                            results = response.json()
+                            
+                            # Process results
+                            if results.get('results'):
+                                web_results = "\n".join([
+                                    f"• {result['title']}\n  {result['snippet']}"
+                                    for result in results['results'][:3]  # Top 3 results
+                                ])
+                            else:
+                                web_results = "Nenhum resultado encontrado"
+                                
+                        except Exception as e:
+                            web_results = f"Erro na busca: {str(e)}"
                         
-                        web_results = simple_web_search(prompt)
                         resposta = modelo_texto.generate_content(
                             f"{contexto}\nDados da web:\n{web_results}\nPergunta: {prompt}"
                         )
