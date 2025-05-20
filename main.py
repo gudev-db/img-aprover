@@ -6,7 +6,8 @@ import google.generativeai as genai
 import os
 from PIL import Image
 import requests
-
+import asyncio
+from crawl4ai import *
 
 
 
@@ -44,36 +45,33 @@ tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_resumo = st.tabs([
     "📝 Resumo de Textos"
 ])
 
-
 with tab_chatbot:  
     st.header("Chat Virtual Holambra")
     st.caption("Pergunte qualquer coisa sobre as diretrizes e informações da Holambra")
     
-    # Inicializa o histórico de chat na session_state
+    # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
-    # Exibe o histórico de mensagens
+    # Display message history
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
-    # Input do usuário
+    # User input
     if prompt := st.chat_input("Como posso ajudar?"):
-        # Adiciona a mensagem do usuário ao histórico
+        # Add user message to history
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
         
-        # Prepara o contexto com as diretrizes
+        # Prepare context
         contexto = f"""
         Você é um assistente virtual especializado na Holambra Cooperativa Agroindustrial.
-        Baseie todas as suas respostas nestas diretrizes oficiais da Holambra Cooperativa Agroindustrial:
+        Baseie suas respostas nestas diretrizes:
         {conteudo}
 
-
-        
-        Regras importantes:
+        Regras:
         - Seja preciso e técnico
         - Quando o usuário fala Holambra, ele está se referindo a Holambra Cooperativa Agroindustrial
         - NÃO HÁ conexão entre a Holambra Cooperativa Agroindustrial e as flores Holambra
@@ -83,27 +81,44 @@ with tab_chatbot:
         - Forneça exemplos quando útil
         """
         
-        # Gera a resposta do modelo
         with st.chat_message("assistant"):
             with st.spinner('Pensando...'):
                 try:
-                    # Usa o histórico completo para contexto
-                    historico_formatado = "\n".join(
-                        [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
-                    )
+                    # Check if web search is needed (add trigger phrases)
+                    needs_web_search = any(keyword in prompt.lower() for keyword in [
+                        "notícias", "atualizações", "novidades", 
+                        "busca na web", "informações recentes"
+                    ])
                     
-                    resposta = modelo_texto.generate_content(
-                        f"{contexto}\n\nHistórico da conversa:\n{historico_formatado}\n\nResposta:"
-                    )
+                    if needs_web_search:
+                        # Web search with Crawl4AI
+                        from crawl4ai import AsyncWebCrawler
+                        import asyncio
+                        
+                        async def web_search(query):
+                            async with AsyncWebCrawler() as crawler:
+                                result = await crawler.arun(
+                                    url=f"https://www.google.com/search?q={query}+site:holambra.com.br",
+                                    max_pages=1
+                                )
+                                return result.markdown[:2000]  # Limit length
+                        
+                        web_results = asyncio.run(web_search(prompt))
+                        resposta = modelo_texto.generate_content(
+                            f"{contexto}\n\nDados da web:\n{web_results}\n\nPergunta: {prompt}\n\nResposta:"
+                        )
+                    else:
+                        # Standard context-based response
+                        resposta = modelo_texto.generate_content(
+                            f"{contexto}\n\nPergunta: {prompt}\n\nResposta:"
+                        )
                     
-                    # Exibe a resposta
                     st.markdown(resposta.text)
-                    
-                    # Adiciona ao histórico
                     st.session_state.messages.append({"role": "assistant", "content": resposta.text})
                     
                 except Exception as e:
-                    st.error(f"Erro ao gerar resposta: {str(e)}")
+                    st.error(f"Erro: {str(e)}")
+
 
 # --- Estilização Adicional ---
 st.markdown("""
