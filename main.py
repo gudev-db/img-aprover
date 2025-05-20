@@ -88,6 +88,16 @@ with tab_chatbot:
         - Se a pergunta for irrelevante, oriente educadamente
         - Forneça exemplos quando útil
         - Se houver resultados de busca na web, mencione-os claramente.
+
+        IMPORTANTE:
+        1. Para perguntas sobre atualizações, notícias ou informações recentes:
+           - Sempre faça uma busca na web primeiro
+           - Considere os últimos 6 meses como "recente"
+           - Se não encontrar nada, sugira fontes oficiais
+        2. Nunca diga apenas "não tenho acesso", sempre forneça alternativas
+        3. Para resultados de busca:
+           - Resuma as informações encontradas
+           - Inclua links diretos quando disponíveis
         """
         
         with st.chat_message("assistant"):
