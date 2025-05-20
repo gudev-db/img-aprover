@@ -9,7 +9,7 @@ import requests
 import asyncio
 from crawl4ai import *
 import requests
-import BeautifulSoup as bs4
+
 
 
 
