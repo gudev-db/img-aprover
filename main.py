@@ -91,33 +91,42 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # Web search with Crawl4AI
-                        from crawl4ai import AsyncWebCrawler
-                        import asyncio
+                        # Lightweight web search (no browser)
+                        from crawl4ai import WebCrawler
+                        from crawl4ai.extraction_strategy import LXMLScraper
                         
-                        async def web_search(query):
-                            async with AsyncWebCrawler() as crawler:
-                                result = await crawler.arun(
-                                    url=f"https://www.google.com/search?q={query}+site:holambra.com.br",
-                                    max_pages=1
-                                )
-                                return result.markdown[:2000]  # Limit length
+                        crawler = WebCrawler(
+                            extraction_strategy=LXMLScraper(),
+                            bypass_robots=True
+                        )
                         
-                        web_results = asyncio.run(web_search(prompt))
+                        try:
+                            result = crawler.run(
+                                url=f"https://www.google.com/search?q={prompt}+site:holambra.com.br",
+                                max_pages=1
+                            )
+                            web_results = result.markdown[:2000] if result else "Nenhum resultado encontrado"
+                        except Exception as e:
+                            web_results = f"Erro na busca: {str(e)}"
+                            
                         resposta = modelo_texto.generate_content(
-                            f"{contexto}\n\nDados da web:\n{web_results}\n\nPergunta: {prompt}\n\nResposta:"
+                            f"{contexto}\nDados da web:\n{web_results}\nPergunta: {prompt}"
                         )
                     else:
                         # Standard context-based response
                         resposta = modelo_texto.generate_content(
-                            f"{contexto}\n\nPergunta: {prompt}\n\nResposta:"
+                            f"{contexto}\nPergunta: {prompt}"
                         )
                     
                     st.markdown(resposta.text)
-                    st.session_state.messages.append({"role": "assistant", "content": resposta.text})
+                    st.session_state.messages.append({
+                        "role": "assistant", 
+                        "content": resposta.text,
+                        "source": "web" if needs_web_search else "knowledge base"
+                    })
                     
                 except Exception as e:
-                    st.error(f"Erro: {str(e)}")
+                    st.error(f"Erro ao processar: {str(e)}")
 
 
 # --- Estilização Adicional ---
