@@ -97,10 +97,10 @@ with tab_chatbot:
                         # LangSearch API implementation
                         url = "https://api.langsearch.com/v1/web-search"
                         payload = json.dumps({
-                            "query": f"{prompt} site:holambra.com.br",
+                            "query": f"{prompt}",
                             "freshness": "noLimit",
                             "summary": True,
-                            "count": 3  # Get top 3 results
+                            "count": 50  # Get top 3 results
                         })
                         headers = {
                             'Authorization': f'Bearer {LANGS_KEY}',
