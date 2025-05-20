@@ -6,8 +6,9 @@ import google.generativeai as genai
 import os
 from PIL import Image
 import requests
-from crawl4ai import WebCrawler, AsyncWebCrawler
-from crawl4ai.extraction_strategy import *
+
+
+
 
 # Configuração inicial
 st.set_page_config(
@@ -20,10 +21,16 @@ st.image('assets/macLogo.png', width=300)
 st.header('Agente Holambra')
 st.header(' ')
 
+
+
+
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
+
+
+
 
 # Carrega diretrizes
 with open('data.txt', 'r') as file:
@@ -37,23 +44,35 @@ tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_resumo = st.tabs([
     "📝 Resumo de Textos"
 ])
 
+
 with tab_chatbot:  
     st.header("Chat Virtual Holambra")
     st.caption("Pergunte qualquer coisa sobre as diretrizes e informações da Holambra")
     
+    # Inicializa o histórico de chat na session_state
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
+    # Exibe o histórico de mensagens
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
-    async def handle_chat(prompt):
+    # Input do usuário
+    if prompt := st.chat_input("Como posso ajudar?"):
+        # Adiciona a mensagem do usuário ao histórico
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        
+        # Prepara o contexto com as diretrizes
         contexto = f"""
         Você é um assistente virtual especializado na Holambra Cooperativa Agroindustrial.
         Baseie todas as suas respostas nestas diretrizes oficiais da Holambra Cooperativa Agroindustrial:
         {conteudo}
 
+
+        
         Regras importantes:
         - Seja preciso e técnico
         - Quando o usuário fala Holambra, ele está se referindo a Holambra Cooperativa Agroindustrial
@@ -64,74 +83,25 @@ with tab_chatbot:
         - Forneça exemplos quando útil
         """
         
-        need_web_search = "http://" in prompt or "https://" in prompt or any(
-            kw in prompt.lower() for kw in [
-                "últimas notícias", "notícias recentes", "atualizações",
-                "informações recentes", "dados atualizados", "hoje em dia",
-                "atualmente", "nos últimos dias", "buscar na web", "pesquisar online"
-            ])
-        
-        web_content = None
-        if need_web_search:
-            url_to_crawl = None
-            if "http://" in prompt or "https://" in prompt:
-                url_start = prompt.find("http")
-                url_end = prompt.find(" ", url_start) if " " in prompt[url_start:] else len(prompt)
-                url_to_crawl = prompt[url_start:url_end]
-            
-            if url_to_crawl:
-                with st.spinner('Coletando informações da página...'):
-                    try:
-                        async with AsyncWebCrawler() as crawler:
-                            result = await crawler.arun(url=url_to_crawl)
-                            web_content = result.text if result else None
-                    except Exception as e:
-                        st.error(f"Erro ao acessar a URL: {str(e)}")
-            else:
-                with st.spinner('Pesquisando informações atualizadas...'):
-                    try:
-                        crawler = WebCrawler()
-                        result = crawler.run(
-                            search_query=prompt,
-                            search_limit=3,
-                            word_count_threshold=200
-                        )
-                        web_content = "\n\n".join([res.text for res in result.results]) if result else None
-                    except Exception as e:
-                        st.error(f"Erro na pesquisa: {str(e)}")
-            
-            if web_content:
-                contexto += f"""
-                Informações obtidas da web:
-                {web_content}
-                
-                Ao usar informações da web:
-                - Priorize as fontes oficiais e confiáveis
-                - Compare com as diretrizes da Holambra
-                - Se houver conflito, priorize as diretrizes oficiais
-                - Cite as fontes quando relevante
-                """
-        
-        historico_formatado = "\n".join(
-            [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
-        )
-        
-        resposta = modelo_texto.generate_content(
-            f"{contexto}\n\nHistórico da conversa:\n{historico_formatado}\n\nResposta:"
-        )
-        return resposta.text if resposta else "Não foi possível gerar uma resposta."
-
-    if prompt := st.chat_input("Como posso ajudar?"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        
+        # Gera a resposta do modelo
         with st.chat_message("assistant"):
             with st.spinner('Pensando...'):
                 try:
-                    resposta_text = await handle_chat(prompt)
-                    st.markdown(resposta_text)
-                    st.session_state.messages.append({"role": "assistant", "content": resposta_text})
+                    # Usa o histórico completo para contexto
+                    historico_formatado = "\n".join(
+                        [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
+                    )
+                    
+                    resposta = modelo_texto.generate_content(
+                        f"{contexto}\n\nHistórico da conversa:\n{historico_formatado}\n\nResposta:"
+                    )
+                    
+                    # Exibe a resposta
+                    st.markdown(resposta.text)
+                    
+                    # Adiciona ao histórico
+                    st.session_state.messages.append({"role": "assistant", "content": resposta.text})
+                    
                 except Exception as e:
                     st.error(f"Erro ao gerar resposta: {str(e)}")
 
@@ -156,6 +126,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
 
 with tab_aprovacao:
     st.header("Validação de Materiais")
@@ -281,6 +252,9 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+
+
 
 with tab_briefing:
     st.header("Gerador de Briefing Holambra")
