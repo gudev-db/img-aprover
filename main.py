@@ -11,6 +11,7 @@ from crawl4ai import *
 import requests
 import json
 from dotenv import load_dotenv
+from duckduckgo_search import ddg
 
 
 
@@ -90,67 +91,58 @@ with tab_chatbot:
                 try:
                     # Check if web search is needed (add trigger phrases)
                     needs_web_search = any(keyword in prompt.lower() for keyword in [
-                        "notícias", "atualizações", "novidades", 
-                        "busca na web", "informações recentes"
-                    ])
+                        "notícias", "atualizações", "novidades", "busca na web",
+                        "informações recentes", "últimas", "hoje", "este mês",
+                        "2023", "2024", "dados recentes", "estatísticas atuais"
+                    ]) or "quando" in prompt.lower()
+                    
+                    web_results = ""
+                    sources_text = ""
                     
                     if needs_web_search:
-                        # Improved LangSearch API implementation
-                        url = "https://api.langsearch.com/v1/web-search"
-                        
-                        # Enhanced query construction
-                        query = f"{prompt}"
-                        
-                        payload = {
-                            "query": query,
-                            "freshness": "month",
-                            "summary": True,
-                            "count": 100,  # Optimal number of results  # Portuguese content
-                        }
-                        
-                        headers = {
-                            'Authorization': f'Bearer {LANGS_KEY}',
-                            'Content-Type': 'application/json'
-                        }
-                        
+                        # Using DuckDuckGo as fallback (no API key needed)
                         try:
-                            response = requests.post(
-                                url,
-                                headers=headers,
-                                json=payload,  # Using json instead of dumps
-                                timeout=150
-                            )
-                            response.raise_for_status()
-                            results = response.json()
+                            from duckduckgo_search import ddg
+                            
+                            search_query = f"Holambra Cooperativa Agroindustrial {prompt}"
+                            results = ddg(search_query, max_results=3)
                             
                             if results:
-                                web_results = results
-                                    
+                                web_results = "\n".join([
+                                    f"- {res['title']}: {res['body']} (Fonte: {res['link']})"
+                                    for res in results
+                                ])
+                                sources_text = "**Fontes consultadas:**\n" + "\n".join(
+                                    f"[{res['title']}]({res['link']})" for res in results
+                                )
                             else:
-                                web_results = "Nenhum resultado encontrado"
-                                
-                        except requests.exceptions.RequestException as e:
-                            st.warning("A busca online encontrou dificuldades. Mostrando apenas informações locais.")
-                            web_results = ""
-                            
-                        resposta = modelo_texto.generate_content(
-                            f"{contexto}\n\nDados da web:\n{web_results}\n\nPergunta: {prompt}"
-                        )
-                    else:
-                        # Standard context-based response
-                        resposta = modelo_texto.generate_content(
-                            f"{contexto}\nPergunta: {prompt}"
-                        )
+                                web_results = "Nenhum resultado recente encontrado na web."
+                        except Exception as e:
+                            web_results = f"Não foi possível completar a busca na web: {str(e)}"
                     
+                    # Prepare the full prompt for the model
+                    full_prompt = f"{contexto}\n\nDados complementares:\n{web_results}\n\nPergunta: {prompt}"
+                    
+                    # Get response from your text model
+                    resposta = modelo_texto.generate_content(full_prompt)
+                    
+                    # Display response
                     st.markdown(resposta.text)
+                    
+                    # Add to history with metadata
                     st.session_state.messages.append({
                         "role": "assistant", 
                         "content": resposta.text,
-                        "source": "web" if needs_web_search and web_results else "knowledge base"
+                        "sources": sources_text if needs_web_search else "Base de conhecimento local",
+                        "search_performed": needs_web_search
                     })
                     
                 except Exception as e:
-                    st.error(f"Erro ao processar: {str(e)}")
+                    st.error(f"Ocorreu um erro: {str(e)}")
+                    st.session_state.messages.append({
+                        "role": "assistant", 
+                        "content": f"Desculpe, ocorreu um erro ao processar sua solicitação."
+                    })
 
 # --- Estilização Adicional ---
 st.markdown("""
