@@ -104,10 +104,8 @@ with tab_chatbot:
                         payload = {
                             "query": query,
                             "freshness": "month",
-                            "summary": True,
-                            "count": 5,  # Optimal number of results
-                            "region": "br",  # Focus on Brazilian results
-                            "language": "pt"  # Portuguese content
+                            "summary": False,
+                            "count": 100,  # Optimal number of results  # Portuguese content
                         }
                         
                         headers = {
