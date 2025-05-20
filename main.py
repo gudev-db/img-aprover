@@ -94,38 +94,56 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # LangSearch API implementation
+                        # Improved LangSearch API implementation
                         url = "https://api.langsearch.com/v1/web-search"
-                        payload = json.dumps({
-                            "query": f"{prompt}",
-                            "freshness": "noLimit",
+                        
+                        # Enhanced query construction
+                        query = f"{prompt} site:holambra.com.br OR site:holambra.coop.br"
+                        
+                        payload = {
+                            "query": query,
+                            "freshness": "month",
                             "summary": True,
-                            "count": 50  # Get top 3 results
-                        })
+                            "count": 5,  # Optimal number of results
+                            "region": "br",  # Focus on Brazilian results
+                            "language": "pt"  # Portuguese content
+                        }
+                        
                         headers = {
                             'Authorization': f'Bearer {LANGS_KEY}',
                             'Content-Type': 'application/json'
                         }
                         
                         try:
-                            response = requests.post(url, headers=headers, data=payload, timeout=10)
+                            response = requests.post(
+                                url,
+                                headers=headers,
+                                json=payload,  # Using json instead of dumps
+                                timeout=15
+                            )
                             response.raise_for_status()
                             results = response.json()
                             
-                            # Process results
+                            # Enhanced result processing
                             if results.get('results'):
-                                web_results = "\n".join([
-                                    f"• {result['title']}\n  {result['snippet']}"
-                                    for result in results['results'][:50]  # Top 3 results
-                                ])
+                                web_results = []
+                                for result in results['results'][:5]:  # Top 5 results
+                                    if 'holambra' in result['url'].lower():
+                                        web_results.append(
+                                            f"• [{result['title']}]({result['url']})\n"
+                                            f"  {result['snippet']}\n"
+                                            f"  *Fonte: {result['url']}*"
+                                        )
+                                web_results = "\n\n".join(web_results) if web_results else "Nenhum resultado relevante encontrado"
                             else:
                                 web_results = "Nenhum resultado encontrado"
                                 
-                        except Exception as e:
-                            web_results = f"Erro na busca: {str(e)}"
-                        
+                        except requests.exceptions.RequestException as e:
+                            st.warning("A busca online encontrou dificuldades. Mostrando apenas informações locais.")
+                            web_results = ""
+                            
                         resposta = modelo_texto.generate_content(
-                            f"{contexto}\nDados da web:\n{web_results}\nPergunta: {prompt}"
+                            f"{contexto}\n\nDados da web:\n{web_results}\n\nPergunta: {prompt}"
                         )
                     else:
                         # Standard context-based response
@@ -137,12 +155,11 @@ with tab_chatbot:
                     st.session_state.messages.append({
                         "role": "assistant", 
                         "content": resposta.text,
-                        "source": "web" if needs_web_search else "knowledge base"
+                        "source": "web" if needs_web_search and web_results else "knowledge base"
                     })
                     
                 except Exception as e:
                     st.error(f"Erro ao processar: {str(e)}")
-
 
 # --- Estilização Adicional ---
 st.markdown("""
