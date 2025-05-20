@@ -123,10 +123,8 @@ with tab_chatbot:
                             response.raise_for_status()
                             results = response.json()
                             
-                            # Enhanced result processing
-                            if results.get('results'):
+                            if results:
                                 web_results = results
-                                
                                     
                             else:
                                 web_results = "Nenhum resultado encontrado"
