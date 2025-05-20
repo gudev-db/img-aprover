@@ -99,7 +99,7 @@ with tab_chatbot:
                         url = "https://api.langsearch.com/v1/web-search"
                         
                         # Enhanced query construction
-                        query = f"{prompt} site:holambra.com.br OR site:holambra.coop.br"
+                        query = f"{prompt}"
                         
                         payload = {
                             "query": query,
