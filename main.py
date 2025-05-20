@@ -125,15 +125,9 @@ with tab_chatbot:
                             
                             # Enhanced result processing
                             if results.get('results'):
-                                web_results = []
-                                for result in results['results'][:50]:  # Top 5 results
+                                web_results = results
+                                
                                     
-                                    web_results.append(
-                                            f"• [{result['title']}]({result['url']})\n"
-                                            f"  {result['snippet']}\n"
-                                            f"  *Fonte: {result['url']}*"
-                                        )
-                                web_results = "\n\n".join(web_results) if web_results else "Nenhum resultado relevante encontrado"
                             else:
                                 web_results = "Nenhum resultado encontrado"
                                 
