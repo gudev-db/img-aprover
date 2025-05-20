@@ -92,11 +92,11 @@ with tab_chatbot:
                     
                     if needs_web_search:
                         # Lightweight web search (no browser)
-                        from crawl4ai import WebCrawler
-                        from crawl4ai.extraction_strategy import LXMLScraper
+                        from crawl4ai.crawler import Crawler
+                        from crawl4ai.extraction_strategy import LXMLExtractionStrategy
                         
-                        crawler = WebCrawler(
-                            extraction_strategy=LXMLScraper(),
+                        crawler = Crawler(
+                            extraction_strategy=LXMLExtractionStrategy(),
                             bypass_robots=True
                         )
                         
