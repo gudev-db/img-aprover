@@ -116,7 +116,7 @@ with tab_chatbot:
                             if results.get('results'):
                                 web_results = "\n".join([
                                     f"• {result['title']}\n  {result['snippet']}"
-                                    for result in results['results'][:3]  # Top 3 results
+                                    for result in results['results'][:50]  # Top 3 results
                                 ])
                             else:
                                 web_results = "Nenhum resultado encontrado"
