@@ -48,6 +48,11 @@ tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_resumo = st.tabs([
     "📝 Resumo de Textos"
 ])
 
+import streamlit as st
+import requests
+from duckduckgo_search import ddg
+import os
+
 with tab_chatbot:  
     st.header("Chat Virtual Holambra")
     st.caption("Pergunte qualquer coisa sobre as diretrizes e informações da Holambra")
@@ -60,6 +65,9 @@ with tab_chatbot:
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+            if message.get("sources"):
+                with st.expander("🔍 Ver fontes consultadas"):
+                    st.markdown(message["sources"])
     
     # User input
     if prompt := st.chat_input("Como posso ajudar?"):
@@ -82,96 +90,112 @@ with tab_chatbot:
         - Mantenha o tom profissional mas amigável
         - Se a pergunta for irrelevante, oriente educadamente
         - Forneça exemplos quando útil
-        - Se houver resultados de busca na web no contexto retornado, fale sobre eles.
+        - Se houver resultados de busca na web, mencione-os claramente.
         """
         
         with st.chat_message("assistant"):
-            with st.spinner('Pensando...'):
+            with st.spinner('Analisando sua pergunta...'):
                 try:
-                    # Check if web search is needed (add trigger phrases)
+                    # Check if web search is needed (expanded trigger phrases)
                     needs_web_search = any(keyword in prompt.lower() for keyword in [
-                        "notícias", "atualizações", "novidades", 
-                        "busca na web", "informações recentes"
+                        "notícias", "atualizações", "novidades", "busca", 
+                        "informações recentes", "últimas", "hoje", "dados",
+                        "pesquisa", "consulta", "estatísticas", "números",
+                        "tendências", "mercado", "preços", "cotação"
+                    ]) or any(verb in prompt.lower() for verb in [
+                        "ache", "encontre", "procure", "localize"
                     ])
                     
+                    web_results = ""
+                    sources_text = ""
+                    
                     if needs_web_search:
-                        # Configuração robusta da busca
-                        query = f"({prompt}) AND (site:holambra.com.br OR site:holambra.coop.br)"
-                        
-                        payload = {
-                            "query": query,
-                            "freshness": "year",
-                            "summary": True,
-                            "count": 5,
-                            "region": "br",
-                            "language": "pt",
-                            "highlight": True
-                        }
-                        
-                        headers = {
-                            'Authorization': f'Bearer {LANGS_KEY}',
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
-                        
                         try:
-                            response = requests.post(
-                                "https://api.langsearch.com/v1/web-search",
-                                headers=headers,
-                                json=payload,
-                                timeout=20
-                            )
-                            
-                            if response.status_code == 200:
-                                results = response.json()
+                            # First try LangSearch API if available
+                            if 'LANGS_KEY' in os.environ:
+                                headers = {
+                                    'Authorization': f'Bearer {os.environ["LANGS_KEY"]}',
+                                    'Content-Type': 'application/json'
+                                }
+                                payload = {
+                                    "query": f"{prompt}",
+
+                                    "freshness": "month",
+                                    "count": 15
+                                }
+                                response = requests.post(
+                                    "https://api.langsearch.com/v1/web-search",
+                                    headers=headers,
+                                    json=payload,
+                                    timeout=150
+                                )
                                 
-                                if results.get('results'):
-                                    web_results = []
-                                    for result in results['results']:
-                                        if any(ext in result['url'].lower() for ext in ['holambra.com.br', 'holambra.coop.br']):
-                                            web_results.append(
-                                                f"### {result['title']}\n"
-                                                f"{result['snippet']}\n"
-                                                f"*Fonte: [{result['url']}]({result['url']})*"
-                                            )
-                                    
-                                    web_results = "\n\n".join(web_results[:3]) if web_results else (
-                                        "Não encontrei informações recentes no site oficial. "
-                                        "Recomendo verificar diretamente no [site da Holambra](https://www.holambra.com.br)"
-                                    )
+                                if response.status_code == 200:
+                                    results = response.json().get('results', [])
                                 else:
-                                    web_results = (
-                                        "A busca não retornou resultados. "
-                                        "Você pode encontrar informações no [site oficial](https://www.holambra.com.br)"
-                                    )
+                                    results = []
                             else:
-                                web_results = f"Erro na API (status {response.status_code}): {response.text}"
+                                results = []
+                            
+                            
+                            
+                            # Process all results regardless of domain
+                            if results:
+                                web_results = []
+                                sources = []
+                                
+                                for i, result in enumerate(results[:3], 1):
+                                    title = result.get('title', 'Sem título')
+                                    snippet = result.get('snippet') or result.get('body', 'Sem descrição disponível')
+                                    url = result.get('link') or result.get('url', '#')
+                                    
+                                    web_results.append(
+                                        f"**{title}**\n"
+                                        f"{snippet}\n"
+                                        f"[Fonte {i}]({url})"
+                                    )
+                                    sources.append(f"{i}. [{title}]({url})")
+                                
+                                web_results = "\n\n".join(web_results)
+                                sources_text = "**Fontes consultadas:**\n" + "\n".join(sources)
+                            else:
+                                web_results = "Não encontrei informações relevantes na busca online."
+                                sources_text = "Nenhuma fonte consultada"
                                 
                         except Exception as e:
-                            web_results = (
-                                "Houve um problema na conexão com a busca online. "
-                                f"Detalhes técnicos: {str(e)}"
-                            )
-                        
-                        resposta = modelo_texto.generate_content(
-                            f"Contexto:\n{contexto}\n\n"
-                            f"Resultados da busca:\n{web_results}\n\n"
-                            f"Com base nestas informações, responda à pergunta: {prompt}\n"
-                            "Seja conciso e direto."
-                        )
-                    else:
-                        resposta = modelo_texto.generate_content(
-                            f"{contexto}\nPergunta: {prompt}"
-                        )
+                            web_results = f"⚠️ A busca encontrou dificuldades: {str(e)}"
+                            sources_text = "Erro na busca"
                     
+                    # Generate response
+                    system_prompt = f"{contexto}\n\nDados complementares:\n{web_results}"
+                    
+                    resposta = modelo_texto.generate_content(
+                        f"{system_prompt}\n\nPergunta: {prompt}\n"
+                        "Instruções:\n"
+                        "- Seja conciso e objetivo\n"
+                        "- Cite fontes quando disponíveis\n"
+                        "- Mantenha o foco na Holambra Cooperativa"
+                    )
+                    
+                    # Display response
                     st.markdown(resposta.text)
+                    
+                    # Add to history with metadata
                     st.session_state.messages.append({
                         "role": "assistant", 
-                        "content": resposta.text
+                        "content": resposta.text,
+                        "sources": sources_text if needs_web_search else "Base de conhecimento local",
+                        "search_performed": needs_web_search
                     })
                     
                 except Exception as e:
-                    st.error(f"Desculpe, ocorreu um erro inesperado. Por favor, tente novamente. Detalhes: {str(e)}")
+                    error_msg = "Desculpe, ocorreu um erro inesperado. Por favor, tente novamente mais tarde."
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant", 
+                        "content": error_msg,
+                        "sources": "Erro no sistema"
+                    })
 
 # --- Estilização Adicional ---
 st.markdown("""
