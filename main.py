@@ -103,7 +103,7 @@ with tab_chatbot:
                                     "https://www.bing.com/search",
                                     params={"q": f"{query} site:holambra.com.br"},
                                     headers={"User-Agent": "Mozilla/5.0"},
-                                    timeout=10
+                                    timeout=100
                                 )
                                 soup = BeautifulSoup(response.text, 'html.parser')
                                 results = []
