@@ -91,24 +91,21 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # Lightweight web search (no browser)
-                        from crawl4ai.crawler import Crawler
-                        from crawl4ai.extraction_strategy import LXMLExtractionStrategy
+                        # Web search with Crawl4AI (exactly as per docs)
+                        from crawl4ai import AsyncWebCrawler
+                        import asyncio
                         
-                        crawler = Crawler(
-                            extraction_strategy=LXMLExtractionStrategy(),
-                            bypass_robots=True
-                        )
+                        async def web_search():
+                            async with AsyncWebCrawler() as crawler:
+                                return await crawler.arun(
+                                    url=f"https://www.google.com/search?q={prompt}+site:holambra.com.br",
+                                    max_pages=1
+                                )
                         
-                        try:
-                            result = crawler.run(
-                                url=f"https://www.google.com/search?q={prompt}+site:holambra.com.br",
-                                max_pages=1
-                            )
-                            web_results = result.markdown[:2000] if result else "Nenhum resultado encontrado"
-                        except Exception as e:
-                            web_results = f"Erro na busca: {str(e)}"
-                            
+                        # Run the async function
+                        result = asyncio.run(web_search())
+                        web_results = result.markdown[:2000] if result else "Nenhum resultado encontrado"
+                        
                         resposta = modelo_texto.generate_content(
                             f"{contexto}\nDados da web:\n{web_results}\nPergunta: {prompt}"
                         )
