@@ -91,20 +91,33 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # Web search with Crawl4AI (exactly as per docs)
-                        from crawl4ai import AsyncWebCrawler
+                        # Proper AsyncWebCrawler implementation (per official docs)
+                        from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
                         import asyncio
-                        
-                        async def web_search():
-                            async with AsyncWebCrawler() as crawler:
-                                return await crawler.arun(
-                                    url=f"https://www.google.com/search?q={prompt}+site:holambra.com.br",
-                                    max_pages=1
+
+                        # Configure browser (headless mode for Streamlit Cloud)
+                        browser_cfg = BrowserConfig(
+                            browser_type="chromium",
+                            headless=True,
+                            verbose=False
+                        )
+
+                        # Configure crawl parameters
+                        run_cfg = CrawlerRunConfig(
+                            word_count_threshold=10,  # Ignore pages with <10 words
+                            remove_overlay_elements=True,  # Clean popups/ads
+                            wait_for=2000  # Wait 2s for page load
+                        )
+
+                        async def perform_search():
+                            async with AsyncWebCrawler(config=browser_cfg) as crawler:
+                                result = await crawler.arun(
+                                    url=f"https://www.bing.com/search?q={prompt}+site:holambra.com.br",
+                                    config=run_cfg
                                 )
-                        
-                        # Run the async function
-                        result = asyncio.run(web_search())
-                        web_results = result.markdown[:2000] if result else "Nenhum resultado encontrado"
+                                return result.markdown[:2000] if result and result.success else "Nenhum resultado encontrado"
+
+                        web_results = asyncio.run(perform_search())
                         
                         resposta = modelo_texto.generate_content(
                             f"{contexto}\nDados da web:\n{web_results}\nPergunta: {prompt}"
