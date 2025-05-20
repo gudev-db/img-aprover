@@ -91,34 +91,28 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # Proper AsyncWebCrawler implementation (per official docs)
-                        from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
-                        import asyncio
-
-                        # Configure browser (headless mode for Streamlit Cloud)
-                        browser_cfg = BrowserConfig(
-                            browser_type="chromium",
-                            headless=True,
-                            verbose=False
-                        )
-
-                        # Configure crawl parameters
-                        run_cfg = CrawlerRunConfig(
-                            word_count_threshold=10,  # Ignore pages with <10 words
-                            remove_overlay_elements=True,  # Clean popups/ads
-                            wait_for=2000  # Wait 2s for page load
-                        )
-
-                        async def perform_search():
-                            async with AsyncWebCrawler(config=browser_cfg) as crawler:
-                                result = await crawler.arun(
-                                    url=f"https://www.bing.com/search?q={prompt}+site:holambra.com.br",
-                                    config=run_cfg
-                                )
-                                return result.markdown[:2000] if result and result.success else "Nenhum resultado encontrado"
-
-                        web_results = asyncio.run(perform_search())
+                        # Use pure HTTP requests as fallback
+                        import requests
+                        from bs4 import BeautifulSoup
                         
+                        def simple_web_search(query):
+                            try:
+                                response = requests.get(
+                                    "https://www.bing.com/search",
+                                    params={"q": f"{query} site:holambra.com.br"},
+                                    headers={"User-Agent": "Mozilla/5.0"},
+                                    timeout=10
+                                )
+                                soup = BeautifulSoup(response.text, 'html.parser')
+                                results = []
+                                for h2 in soup.find_all('h2'):
+                                    if h2.text.strip() and not h2.text.startswith(('Web Results', 'Related Searches')):
+                                        results.append(h2.text.strip())
+                                return "\n".join(results[:3]) if results else "Nenhum resultado encontrado"
+                            except Exception as e:
+                                return f"Erro na busca: {str(e)}"
+                        
+                        web_results = simple_web_search(prompt)
                         resposta = modelo_texto.generate_content(
                             f"{contexto}\nDados da web:\n{web_results}\nPergunta: {prompt}"
                         )
