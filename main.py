@@ -95,49 +95,71 @@ with tab_chatbot:
                     ])
                     
                     if needs_web_search:
-                        # Improved LangSearch API implementation
-                        url = "https://api.langsearch.com/v1/web-search"
-                        
-                        # Enhanced query construction
-                        query = f"{prompt}"
+                        # Configuração robusta da busca
+                        query = f"({prompt}) AND (site:holambra.com.br OR site:holambra.coop.br)"
                         
                         payload = {
                             "query": query,
-                            "freshness": "month",
+                            "freshness": "year",
                             "summary": True,
-                            "count": 100,  # Optimal number of results  # Portuguese content
+                            "count": 5,
+                            "region": "br",
+                            "language": "pt",
+                            "highlight": True
                         }
                         
                         headers = {
                             'Authorization': f'Bearer {LANGS_KEY}',
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         }
                         
                         try:
                             response = requests.post(
-                                url,
+                                "https://api.langsearch.com/v1/web-search",
                                 headers=headers,
-                                json=payload,  # Using json instead of dumps
-                                timeout=150
+                                json=payload,
+                                timeout=20
                             )
-                            response.raise_for_status()
-                            results = response.json()
                             
-                            if results:
-                                web_results = results
-                                    
-                            else:
-                                web_results = "Nenhum resultado encontrado"
+                            if response.status_code == 200:
+                                results = response.json()
                                 
-                        except requests.exceptions.RequestException as e:
-                            st.warning("A busca online encontrou dificuldades. Mostrando apenas informações locais.")
-                            web_results = ""
-                            
+                                if results.get('results'):
+                                    web_results = []
+                                    for result in results['results']:
+                                        if any(ext in result['url'].lower() for ext in ['holambra.com.br', 'holambra.coop.br']):
+                                            web_results.append(
+                                                f"### {result['title']}\n"
+                                                f"{result['snippet']}\n"
+                                                f"*Fonte: [{result['url']}]({result['url']})*"
+                                            )
+                                    
+                                    web_results = "\n\n".join(web_results[:3]) if web_results else (
+                                        "Não encontrei informações recentes no site oficial. "
+                                        "Recomendo verificar diretamente no [site da Holambra](https://www.holambra.com.br)"
+                                    )
+                                else:
+                                    web_results = (
+                                        "A busca não retornou resultados. "
+                                        "Você pode encontrar informações no [site oficial](https://www.holambra.com.br)"
+                                    )
+                            else:
+                                web_results = f"Erro na API (status {response.status_code}): {response.text}"
+                                
+                        except Exception as e:
+                            web_results = (
+                                "Houve um problema na conexão com a busca online. "
+                                f"Detalhes técnicos: {str(e)}"
+                            )
+                        
                         resposta = modelo_texto.generate_content(
-                            f"{contexto}\n\nDados da web:\n{web_results}\n\nPergunta: {prompt}"
+                            f"Contexto:\n{contexto}\n\n"
+                            f"Resultados da busca:\n{web_results}\n\n"
+                            f"Com base nestas informações, responda à pergunta: {prompt}\n"
+                            "Seja conciso e direto."
                         )
                     else:
-                        # Standard context-based response
                         resposta = modelo_texto.generate_content(
                             f"{contexto}\nPergunta: {prompt}"
                         )
@@ -145,12 +167,11 @@ with tab_chatbot:
                     st.markdown(resposta.text)
                     st.session_state.messages.append({
                         "role": "assistant", 
-                        "content": resposta.text,
-                        "source": "web" if needs_web_search and web_results else "knowledge base"
+                        "content": resposta.text
                     })
                     
                 except Exception as e:
-                    st.error(f"Erro ao processar: {str(e)}")
+                    st.error(f"Desculpe, ocorreu um erro inesperado. Por favor, tente novamente. Detalhes: {str(e)}")
 
 # --- Estilização Adicional ---
 st.markdown("""
