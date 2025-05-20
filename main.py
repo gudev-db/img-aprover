@@ -48,10 +48,7 @@ tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_resumo = st.tabs([
     "📝 Resumo de Textos"
 ])
 
-import streamlit as st
-import requests
-from duckduckgo_search import ddg
-import os
+
 
 with tab_chatbot:  
     st.header("Chat Virtual Holambra")
