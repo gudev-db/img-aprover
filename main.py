@@ -104,7 +104,7 @@ with tab_chatbot:
                         payload = {
                             "query": query,
                             "freshness": "month",
-                            "summary": False,
+                            "summary": True,
                             "count": 100,  # Optimal number of results  # Portuguese content
                         }
                         
