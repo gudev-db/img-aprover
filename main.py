@@ -82,6 +82,7 @@ with tab_chatbot:
         - Mantenha o tom profissional mas amigável
         - Se a pergunta for irrelevante, oriente educadamente
         - Forneça exemplos quando útil
+        - Se houver resultados de busca na web no contexto retornado, fale sobre eles.
         """
         
         with st.chat_message("assistant"):
