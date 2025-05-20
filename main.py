@@ -118,7 +118,7 @@ with tab_chatbot:
                                 url,
                                 headers=headers,
                                 json=payload,  # Using json instead of dumps
-                                timeout=15
+                                timeout=150
                             )
                             response.raise_for_status()
                             results = response.json()
@@ -126,9 +126,9 @@ with tab_chatbot:
                             # Enhanced result processing
                             if results.get('results'):
                                 web_results = []
-                                for result in results['results'][:5]:  # Top 5 results
-                                    if 'holambra' in result['url'].lower():
-                                        web_results.append(
+                                for result in results['results'][:50]:  # Top 5 results
+                                    
+                                    web_results.append(
                                             f"• [{result['title']}]({result['url']})\n"
                                             f"  {result['snippet']}\n"
                                             f"  *Fonte: {result['url']}*"
