@@ -6,9 +6,8 @@ import google.generativeai as genai
 import os
 from PIL import Image
 import requests
-
-
-
+from crawl4ai.web_crawler import WebCrawler
+from crawl4ai.chunking_strategy import *
 
 # Configuração inicial
 st.set_page_config(
@@ -21,16 +20,10 @@ st.image('assets/macLogo.png', width=300)
 st.header('Agente Holambra')
 st.header(' ')
 
-
-
-
 gemini_api_key = os.getenv("GEM_API_KEY")
 genai.configure(api_key=gemini_api_key)
 modelo_vision = genai.GenerativeModel("gemini-2.0-flash", generation_config={"temperature": 0.1})
 modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
-
-
-
 
 # Carrega diretrizes
 with open('data.txt', 'r') as file:
@@ -43,7 +36,6 @@ tab_chatbot, tab_aprovacao, tab_geracao, tab_briefing, tab_resumo = st.tabs([
     "📋 Geração de Briefing Holambra",
     "📝 Resumo de Textos"
 ])
-
 
 with tab_chatbot:  
     st.header("Chat Virtual Holambra")
@@ -71,8 +63,6 @@ with tab_chatbot:
         Baseie todas as suas respostas nestas diretrizes oficiais da Holambra Cooperativa Agroindustrial:
         {conteudo}
 
-
-        
         Regras importantes:
         - Seja preciso e técnico
         - Quando o usuário fala Holambra, ele está se referindo a Holambra Cooperativa Agroindustrial
@@ -87,6 +77,71 @@ with tab_chatbot:
         with st.chat_message("assistant"):
             with st.spinner('Pensando...'):
                 try:
+                    # Verifica se precisa fazer busca na web
+                    need_web_search = False
+                    url_to_crawl = None
+                    
+                    # Verifica se há URLs explícitas na mensagem
+                    if "http://" in prompt or "https://" in prompt:
+                        need_web_search = True
+                        # Extrai a URL da mensagem
+                        url_start = prompt.find("http")
+                        url_end = prompt.find(" ", url_start) if " " in prompt[url_start:] else len(prompt)
+                        url_to_crawl = prompt[url_start:url_end]
+                    
+                    # Verifica se a pergunta parece exigir informações atualizadas
+                    elif any(keyword in prompt.lower() for keyword in [
+                        "últimas notícias", "notícias recentes", "atualizações", 
+                        "informações recentes", "dados atualizados", "hoje em dia",
+                        "atualmente", "nos últimos dias", "buscar na web", "pesquisar online"
+                    ]):
+                        need_web_search = True
+                    
+                    # Se precisar de busca na web
+                    if need_web_search:
+                        if url_to_crawl:
+                            # Busca específica na URL fornecida
+                            with st.spinner('Coletando informações da página...'):
+                                crawler = WebCrawler()
+                                result = crawler.run(
+                                    url=url_to_crawl,
+                                    word_count_threshold=200,
+                                    extraction_strategy="auto",
+                                    chunking_strategy=SemanticChunking(
+                                        embeddings_model="text-embedding-3-large"
+                                    ),
+                                    bypass_cache=False
+                                )
+                                web_content = result.text
+                        else:
+                            # Busca genérica no Google
+                            with st.spinner('Pesquisando informações atualizadas...'):
+                                crawler = WebCrawler()
+                                result = crawler.run(
+                                    search_query=prompt,
+                                    search_limit=3,  # Limita a 3 resultados para não demorar muito
+                                    word_count_threshold=200,
+                                    extraction_strategy="auto",
+                                    chunking_strategy=SemanticChunking(
+                                        embeddings_model="text-embedding-3-large"
+                                    ),
+                                    bypass_cache=False
+                                )
+                                web_content = "\n\n".join([res.text for res in result.results])
+                        
+                        # Adiciona o conteúdo da web ao contexto
+                        contexto += f"""
+                        
+                        Informações obtidas da web:
+                        {web_content}
+                        
+                        Ao usar informações da web:
+                        - Priorize as fontes oficiais e confiáveis
+                        - Compare com as diretrizes da Holambra
+                        - Se houver conflito, priorize as diretrizes oficiais
+                        - Cite as fontes quando relevante
+                        """
+                    
                     # Usa o histórico completo para contexto
                     historico_formatado = "\n".join(
                         [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
@@ -126,7 +181,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 with tab_aprovacao:
     st.header("Validação de Materiais")
@@ -252,9 +306,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
-
-
 
 with tab_briefing:
     st.header("Gerador de Briefing Holambra")
