@@ -6,7 +6,7 @@ import google.generativeai as genai
 import os
 from PIL import Image
 import requests
-from crawl4ai import WebCrawler
+from crawl4ai.web_crawler import WebCrawler
 from crawl4ai.chunking_strategy import *
 
 # Configuração inicial
