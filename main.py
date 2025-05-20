@@ -6,7 +6,8 @@ import google.generativeai as genai
 import os
 from PIL import Image
 import requests
-from crawl4ai import *
+from crawl4ai import WebCrawler, AsyncWebCrawler
+from crawl4ai.extraction_strategy import *
 
 # Configuração inicial
 st.set_page_config(
@@ -40,23 +41,14 @@ with tab_chatbot:
     st.header("Chat Virtual Holambra")
     st.caption("Pergunte qualquer coisa sobre as diretrizes e informações da Holambra")
     
-    # Inicializa o histórico de chat na session_state
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
-    # Exibe o histórico de mensagens
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
-    # Input do usuário
-    if prompt := st.chat_input("Como posso ajudar?"):
-        # Adiciona a mensagem do usuário ao histórico
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        
-        # Prepara o contexto com as diretrizes
+    async def handle_chat(prompt):
         contexto = f"""
         Você é um assistente virtual especializado na Holambra Cooperativa Agroindustrial.
         Baseie todas as suas respostas nestas diretrizes oficiais da Holambra Cooperativa Agroindustrial:
@@ -72,90 +64,74 @@ with tab_chatbot:
         - Forneça exemplos quando útil
         """
         
-        # Gera a resposta do modelo
+        need_web_search = "http://" in prompt or "https://" in prompt or any(
+            kw in prompt.lower() for kw in [
+                "últimas notícias", "notícias recentes", "atualizações",
+                "informações recentes", "dados atualizados", "hoje em dia",
+                "atualmente", "nos últimos dias", "buscar na web", "pesquisar online"
+            ])
+        
+        web_content = None
+        if need_web_search:
+            url_to_crawl = None
+            if "http://" in prompt or "https://" in prompt:
+                url_start = prompt.find("http")
+                url_end = prompt.find(" ", url_start) if " " in prompt[url_start:] else len(prompt)
+                url_to_crawl = prompt[url_start:url_end]
+            
+            if url_to_crawl:
+                with st.spinner('Coletando informações da página...'):
+                    try:
+                        async with AsyncWebCrawler() as crawler:
+                            result = await crawler.arun(url=url_to_crawl)
+                            web_content = result.text if result else None
+                    except Exception as e:
+                        st.error(f"Erro ao acessar a URL: {str(e)}")
+            else:
+                with st.spinner('Pesquisando informações atualizadas...'):
+                    try:
+                        crawler = WebCrawler()
+                        result = crawler.run(
+                            search_query=prompt,
+                            search_limit=3,
+                            word_count_threshold=200
+                        )
+                        web_content = "\n\n".join([res.text for res in result.results]) if result else None
+                    except Exception as e:
+                        st.error(f"Erro na pesquisa: {str(e)}")
+            
+            if web_content:
+                contexto += f"""
+                Informações obtidas da web:
+                {web_content}
+                
+                Ao usar informações da web:
+                - Priorize as fontes oficiais e confiáveis
+                - Compare com as diretrizes da Holambra
+                - Se houver conflito, priorize as diretrizes oficiais
+                - Cite as fontes quando relevante
+                """
+        
+        historico_formatado = "\n".join(
+            [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
+        )
+        
+        resposta = modelo_texto.generate_content(
+            f"{contexto}\n\nHistórico da conversa:\n{historico_formatado}\n\nResposta:"
+        )
+        return resposta.text if resposta else "Não foi possível gerar uma resposta."
+
+    if prompt := st.chat_input("Como posso ajudar?"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        
         with st.chat_message("assistant"):
             with st.spinner('Pensando...'):
                 try:
-                    # Verifica se precisa fazer busca na web
-                    need_web_search = False
-                    url_to_crawl = None
-                    
-                    # Verifica se há URLs explícitas na mensagem
-                    if "http://" in prompt or "https://" in prompt:
-                        need_web_search = True
-                        # Extrai a URL da mensagem
-                        url_start = prompt.find("http")
-                        url_end = prompt.find(" ", url_start) if " " in prompt[url_start:] else len(prompt)
-                        url_to_crawl = prompt[url_start:url_end]
-                    
-                    # Verifica se a pergunta parece exigir informações atualizadas
-                    elif any(keyword in prompt.lower() for keyword in [
-                        "últimas notícias", "notícias recentes", "atualizações", 
-                        "informações recentes", "dados atualizados", "hoje em dia",
-                        "atualmente", "nos últimos dias", "buscar na web", "pesquisar online"
-                    ]):
-                        need_web_search = True
-                    
-                    # Se precisar de busca na web
-                    if need_web_search:
-                        if url_to_crawl:
-                            # Busca específica na URL fornecida
-                            with st.spinner('Coletando informações da página...'):
-                                crawler = WebCrawler()
-                                result = crawler.run(
-                                    url=url_to_crawl,
-                                    word_count_threshold=200,
-                                    extraction_strategy="auto",
-                                    chunking_strategy=SemanticChunking(
-                                        embeddings_model="text-embedding-3-large"
-                                    ),
-                                    bypass_cache=False
-                                )
-                                web_content = result.text
-                        else:
-                            # Busca genérica no Google
-                            with st.spinner('Pesquisando informações atualizadas...'):
-                                crawler = WebCrawler()
-                                result = crawler.run(
-                                    search_query=prompt,
-                                    search_limit=3,  # Limita a 3 resultados para não demorar muito
-                                    word_count_threshold=200,
-                                    extraction_strategy="auto",
-                                    chunking_strategy=SemanticChunking(
-                                        embeddings_model="text-embedding-3-large"
-                                    ),
-                                    bypass_cache=False
-                                )
-                                web_content = "\n\n".join([res.text for res in result.results])
-                        
-                        # Adiciona o conteúdo da web ao contexto
-                        contexto += f"""
-                        
-                        Informações obtidas da web:
-                        {web_content}
-                        
-                        Ao usar informações da web:
-                        - Priorize as fontes oficiais e confiáveis
-                        - Compare com as diretrizes da Holambra
-                        - Se houver conflito, priorize as diretrizes oficiais
-                        - Cite as fontes quando relevante
-                        """
-                    
-                    # Usa o histórico completo para contexto
-                    historico_formatado = "\n".join(
-                        [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
-                    )
-                    
-                    resposta = modelo_texto.generate_content(
-                        f"{contexto}\n\nHistórico da conversa:\n{historico_formatado}\n\nResposta:"
-                    )
-                    
-                    # Exibe a resposta
-                    st.markdown(resposta.text)
-                    
-                    # Adiciona ao histórico
-                    st.session_state.messages.append({"role": "assistant", "content": resposta.text})
-                    
+                    resposta_text = await handle_chat(prompt)
+                    st.markdown(resposta_text)
+                    st.session_state.messages.append({"role": "assistant", "content": resposta_text})
                 except Exception as e:
                     st.error(f"Erro ao gerar resposta: {str(e)}")
 
