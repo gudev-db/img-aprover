@@ -7,7 +7,6 @@ import os
 from PIL import Image
 import requests
 import asyncio
-from crawl4ai import *
 import requests
 import json
 from dotenv import load_dotenv
@@ -260,11 +259,218 @@ with tab_aprovacao:
 
     with subtab2:
         texto_input = st.text_area("Insira o texto para validação:", height=200, key="text_input")
+        revista = st.selectbox(
+            "É conteúdo de revista armazenado numa variável?",
+            options=["sim", "não"],
+            index=None, key = "revista",
+        )
         if st.button("Validar Texto", key="validate_text"):
             with st.spinner('Verificando conformidade...'):
                 resposta = modelo_texto.generate_content(
                     f"""Revise este texto conforme:
+                    ###BEGIN DIRETRIZES DE MARCA###
                     Diretrizes: {conteudo}
+                    ###END DIRETRIZES DE MARCA###
+
+                    
+                    É revista?: {revista}
+                    ###BEGIN DIRETRIZES PARA CONTEÚDO DE REVISTA###
+                    Diretrizes Gerais de Validação de Conteúdo
+                    1. Tom de Voz e Linguagem
+                    Profissional e Colaborativo: A linguagem deve ser formal, mas acessível. O tom é positivo, focado em colaboração, crescimento e inovação.
+                    
+                    Foco na Cooperativa: Utilizar termos como "nossa Cooperativa" e pronomes na primeira pessoa do plural ("estamos", "vamos") para reforçar o senso de comunidade.
+                    
+                    Vocabulário Chave: Priorizar o uso de palavras como "cooperado", "cooperativa", "inovação", "sustentabilidade", "parceria", "crescimento", "conhecimento" e "estratégia".
+                    
+                    Clareza e Objetividade: As informações, especialmente as técnicas (como relatórios de mercado), devem ser apresentadas de forma clara e direta, visando o entendimento do produtor rural.
+                    
+                    2. Estrutura e Formatação
+                    Identidade Visual:
+                    
+                    Cores: A paleta principal é composta por azul escuro, vermelho e branco.
+                    
+                    Logo: O logo "Holambra CONECTA" deve estar presente na capa e o logo institucional da cooperativa no rodapé.
+                    
+                    Cabeçalho e Rodapé:
+                    
+                    Capa: Inclui o número da edição e o mês/ano de publicação (formato: EDIÇÃO [NÚMERO]-[MÊS EM 3 LETRAS]/[ANO COM 2 DÍGITOS], ex: EDIÇÃO 1.859-ABR/25).
+                    
+                    Páginas Internas: O rodapé deve conter "HOLAMBRA COOPERATIVA AGROINDUSTRIAL" à esquerda, o número da página ao centro e "Edição [Nº]-[MÊS]/[ANO]" à direita.
+                    
+                    Tipografia:
+                    
+                    Títulos Principais: Fonte sans-serif, em negrito e caixa alta.
+                    
+                    Subtítulos/Ledes: Fonte serifada, em itálico, logo abaixo do título principal.
+                    
+                    Corpo do Texto: Fonte serifada, de fácil leitura.
+                    
+                    Legendas e Caixas de Destaque: Fonte sans-serif, geralmente menor que o corpo do texto.
+                    
+                    Layout:
+                    
+                    Imagens: Todas as fotos devem ser de alta qualidade, bem iluminadas e com tratamento profissional. Imagens de pessoas devem ser priorizadas, mostrando engajamento. As bordas das imagens são frequentemente arredondadas.
+                    
+                    Organização: O layout utiliza múltiplas colunas e caixas de texto com fundo colorido (azul ou branco) para organizar e hierarquizar a informação.
+                    
+                    Diretrizes de Conteúdo por Seção
+                    Página 1: Capa
+                    Estrutura: Deve apresentar de 3 a 4 chamadas para as matérias principais da edição.
+                    
+                    Conteúdo da Chamada: Cada chamada deve conter:
+                    
+                    Uma imagem de impacto relacionada à matéria.
+                    
+                    Um título claro e conciso.
+                    
+                    Um breve texto descritivo (1-2 linhas).
+                    
+                    Uma indicação da página ("Leia mais na pág. X").
+                    
+                    Página 2: Editorial e Expediente
+                    Editorial:
+                    
+                    Título: Deve possuir um título temático.
+                    
+                    
+                    Autoria: Assinado pelo Presidente do Conselho de Administração. 
+                    
+                    
+                    Conteúdo: Deve refletir sobre o momento atual da Cooperativa, agradecer a colaboradores e cooperados, e apresentar a visão para o futuro. 
+                    
+                    
+                    Quantidade de Palavras: Aproximadamente 200-250 palavras.
+                    
+                    Expediente:
+                    
+                    Formato Fixo: Deve seguir o modelo padrão, listando o Conselho Editorial, a equipe de Marketing, o jornalista responsável, design e informações de contato.
+                    
+                    Páginas 3-4: Matéria Especial (Ex: Novo Conselho)
+                    Foco: Apresentação detalhada de um tema central para a Cooperativa.
+                    
+                    Estrutura:
+                    
+                    Introdução que contextualiza o tema. 
+                    
+                    Perfis individuais com foto, nome, cargo, formação e experiência. 
+                    
+                    
+                    
+                    
+                    
+                    Informações sobre a relação com a Cooperativa (ano de filiação, cargos ocupados). 
+                    
+                    
+                    
+                    
+                    
+                    Uma citação pessoal que expresse as expectativas ou a visão do entrevistado.
+                    
+                    Páginas 4-6: Matérias Informativas (Ex: Prosa no Campo, Holambra Informa)
+                    Conteúdo: Abordam temas técnicos e de mercado relevantes para os cooperados.
+                    
+                    Validação:
+                    
+                    
+                    Fontes Externas: Sempre citar a fonte dos dados (ex: "Fonte: USDA", "Elaboração: StoneX"). 
+                    
+                    
+                    Dados Numéricos: Apresentar dados precisos (hectares, toneladas, percentuais) para dar credibilidade à análise. 
+                    
+                    
+                    
+                    
+                    Tabelas e Gráficos: Utilizar tabelas para comparar dados de forma clara e organizada. 
+                    
+                    
+                    
+                    Análise: O texto deve ir além dos dados, explicando o que eles significam para o produtor e para o mercado. 
+                    
+                    
+                    Quantidade de Palavras: Aproximadamente 400-600 palavras por matéria.
+                    
+                    Páginas 7-10: Cobertura de Eventos e Ações (Ex: Cooperativa em Ação, Visitas)
+                    Conteúdo: Divulgação de eventos promovidos ou participados pela Cooperativa, como visitas técnicas, palestras e dias de campo.
+                    
+                    Validação:
+                    
+                    
+                    Informações Essenciais: Incluir data, local, número de participantes e o objetivo do evento. 
+                    
+                    
+                    Citações: Incluir depoimentos de participantes (cooperados, palestrantes, organizadores) para dar vida à matéria. 
+                    
+                    
+                    
+                    Imagens: Usar fotos do evento que mostrem a interação das pessoas. Todas as fotos devem ter legendas descritivas.
+                    
+                    
+                    Fonte da Matéria: Indicar o departamento responsável pela informação no final (ex: "Fonte: Departamento de Marketing e Inovação"). 
+                    
+                    
+                    Páginas 9-10: Matérias de Caráter Humano e Histórico (Ex: Memorial)
+                    Foco: Contar histórias da comunidade, preservar a memória e destacar o legado de figuras importantes.
+                    
+                    Conteúdo:
+                    
+                    Narrativa envolvente, com contexto histórico. 
+                    
+                    Uso de citações de familiares ou pessoas próximas para trazer emoção e autenticidade. 
+                    
+                    
+                    Informações de serviço, como endereço, contato e como a comunidade pode ajudar. 
+                    
+                    Página 11: Serviços e Agenda
+                    Calendário:
+                    
+                    Divisão: Apresentar calendários separados para diferentes públicos, se necessário (ex: "Cooperado Ouro", "Commodities").
+                    
+                    Clareza: As datas e eventos devem ser listados de forma clara. Pode-se usar cores ou ícones para diferenciar os tipos de evento.
+                    
+                    Ações Preventivas/Comunitárias:
+                    
+                    
+                    Foco: Mostrar o compromisso social da Cooperativa com a comunidade. 
+                    
+                    
+                    Conteúdo: Descrever a ação, os parceiros envolvidos e os resultados. 
+                    
+                    
+                    Página 12: Contatos e Chamada para Interação
+                    Contatos:
+                    
+                    
+                    Organização: Listar os contatos telefônicos por departamento/serviço (Comercial, Financeiro, Fiscal, etc.) para facilitar o acesso. 
+                    
+                    Engajamento:
+                    
+                    
+                    Chamada para Ação: Incluir uma seção que convida o leitor a enviar sugestões de pauta, reforçando que a publicação é feita para ele. 
+                    
+                    
+                    Canais de Contato: Fornecer e-mail, telefone e WhatsApp para o envio de sugestões. 
+                    
+                    Checklist de Validação Final
+                    Antes de aprovar o conteúdo, verifique:
+                    
+                    Consistência do Tom de Voz: O texto soa como a Cooperativa?
+                    
+                    Padrão de Formatação: As fontes, cores e layout seguem o modelo?
+                    
+                    Rodapés e Cabeçalhos: O número da edição, mês/ano e paginação estão corretos em todas as páginas?
+                    
+                    Legendas: Todas as imagens relevantes possuem legendas descritivas?
+                    
+                    Citações: Todas as citações estão visualmente destacadas e devidamente atribuídas?
+                    
+                    Fontes de Dados: As fontes de informações externas (USDA, StoneX, etc.) estão citadas?
+                    
+                    Informações de Serviço: Os contatos e datas no calendário estão corretos e atualizados?
+                    
+                    Revisão Ortográfica e Gramatical: O texto foi completamente revisado?
+
+                    ###END DIRETRIZES PARA CONTEÚDO DE REVISTA###
                     Texto: {texto_input}
                     
                     Formato requerido:
