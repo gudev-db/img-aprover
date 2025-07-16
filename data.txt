@@ -288,6 +288,31 @@
     }
   ]
 }
+###BEGIN CONSELHOR DE ADMINISTRAÇÃO###
+Conselho de Administração
+Thomas Augusto Serrarens – Presidente
+Peter Derks – Vice-presidente
+Maurício Swart – Secretário
+Ricardo Swart – Conselheiro
+Leonardo Kehdi Molan – Conselheiro
+Conselho Fiscal
+Marcia Terezinha van Melis – Coordenadora
+Luciano van den Broek – Secretário
+Adriano Alberto Nyssen – Conselheiro
+Marcelo Justo de Almeida - Suplente
+Murilo Barbieri Nascimento - Suplente
+Otto Stoltenborg - Suplente
+Comissões
+Agricola: Geraldo Adriano de Bruijn, Antonio Marcio Ferreira Del Poço, Fabio Stecca D’Angieri,
+Sergio Alberto Sleutjes, Cristiano Swart
+Citrus: Fabio Adriano van den Boomen, Patrick Johannes Beckers, Eduardo Swart, Hugo Vogt,
+Marcio van Melis
+Inovação: Walter Sleutjes, Abel Simões, Maira Swart, Petrus Daff ara Veldt, Pedro van Melis,
+Wellington Bendinelli
+Comitê Raízes Fortes: Vanessa van Melis, Julia Scholten, Denise Aparecida Valim van den Boomen,
+Ilonka Schoenmaker, Daniela Praxedes Farias Ribeiro, Maria Adriana Nyssen Liebe, Nidia Brisolla
+###END CONSELHOR DE ADMINISTRAÇÃO###
+
 
 Institucional
 Quem somos
@@ -595,42 +620,7 @@ Cereais
 Soja, milho, trigo e sorgo.
 
 #################################################
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Beneficiamento, armazenamento e transporte
-Home
-Serviços
-Beneficiamento, armazenamento e transporte
+
 MATÉRIA-PRIMA E PRESTAÇÃO DE SERVIÇOS
 
 Recepção.
@@ -685,42 +675,6 @@ Comercialização de citrus e frutas com rigoroso controle de qualidade, garanti
 
 ###########################################################
 
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Créditos e Investimento
-Home
-Serviços
-Créditos e Investimento
 
 Recuperação de crédito de ICMS
 Facilita as transações de trocas de insumos por crédito de ICMS.
@@ -728,41 +682,7 @@ Facilita as transações de trocas de insumos por crédito de ICMS.
 Recuperação de valores do Funrural
 Recuperar valores recolhidos sobre exportação indireta, possibilitando uma melhora da estrutura financeira.
 ####################################################
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Quem somos
-Home
-Institucional
+
 Quem somos
 Há mais de 60 anos, produzimos futuro e prosperidade.
 Holambra Cooperativa Agroindustrial, de Paranapanema. Desde 1960 esta marca entrou para a história do agronegócio brasileiro como modelo de cooperativismo de sucesso.
@@ -891,43 +811,6 @@ O que não queremos?
 Desperdício
 ###########################################
 
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Linha do tempo
-Home
-Institucional
-Linha do tempo
-Holambra Cooperativa
 Há mais de 60 anos, somos referência no agronegócio em nossa região como modelo de cooperativismo de sucesso.
 
 Desde 1960, expandimos nossas áreas cultivadas, consolidando a irrigação nas lavouras, implementando alta tecnologia no plantio e passando por grandes reestruturações.
@@ -954,43 +837,6 @@ Investimento na ampliação da estrutura de recepção de cereais, passando de 3
 60 anos de Cooperativa: faturamento superior a R$ 1,3 bi e nova estrutura organizacional e física. Ampliação da capacidade e modernização das unidades de recebimento. Inaugurações em SP: Unidade de Itaberá e Lojas de Suprimentos em Itapetininga e Santa Cruz do Rio Pardo. Desenvolvimento de novos negócios: ração e energia fotovoltaica, preparando a Holambra para os desafios do futuro. Reconhecimentos: certificação Great Place to Work (GPTW), um marco na trajetória de valorização de pessoas da Holambra; eleita a 16ª melhor e maior cooperativa em 2024, segundo a Revista Exame.
 
 
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Certificações e Premiações
-Home
-Institucional
-Certificações e Premiações
-
 Possuímos Certificação (WQS) das nossas unidades armazenadoras referente à padronização e qualidade nos processos de armazenagem em nossas unidades produtivas. Tudo em conformidade com as exigências do do MAPA e da Conab.
 
 Cumprimento das regulamentações.
@@ -1015,41 +861,6 @@ Essa vitória também se estende aos cooperados, que podem contar com um atendim
 A certificação GPTW é mais um marco na trajetória de valorização das pessoas e evidencia o compromisso da Holambra Cooperativa em aprimorar constantemente suas práticas, promovendo um ambiente de trabalho ainda mais positivo e produtivo.
 
 
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Sustentabilidade e Responsabilidade Social
-Home
-Institucional
 Sustentabilidade e Responsabilidade Social
 A Cooperativa Holambra entende que o mundo todo acelerou o ritmo das mudanças e das exigências relacionadas à gestão de organizações. A força das questões ambientais, sociais e de governança (ESG) multiplicou-se exponencialmente e sabemos que elas estão no centro das nossas atividades e dos nossos cooperados, já que fazemos parte da base de tudo na cadeia  produtiva: a agricultura.
 
@@ -1071,43 +882,6 @@ A ação, pertence à Campanha de Inverno da Holambra e conversa diretamente com
 
 
 
-
-Institucional
-Quem somos
-Linha do tempo
-Certificações e Premiações
-Sustentabilidade e Responsabilidade Social
-Inovação
-Unidades
-Matriz
-Avaré
-Itaberá
-Loja Itaberá
-Loja Itapetininga
-Loja Santa Cruz do Rio Pardo
-São Manuel
-Takaoka
-Taquarituba
-Taquarivaí
-Produtos
-Culturas
-Ração Animal
-Insumos Agrícolas
-Serviços
-Beneficiamento, armazenamento e transporte
-Créditos e Investimento
-Carreiras
-Governança
-Conselho
-Portal de Privacidade
-Organograma Geral
-Linha Ética
-Políticas
-Portal do Cooperado
-Inovação
-Home
-Institucional
-Inovação
 
 DESAFIO DE INOVAÇÃO HOLAMBRA
 Transforme suas ideias em negócios reais com o Desafio de Inovação Holambra.
@@ -1137,34 +911,7 @@ Trazer vantagens competitivas aos cooperados melhorando os seus resultados.
 
 Por isso convidamos a todos, e principalmente você startup, empreendedor, pesquisador com projetos e soluções interessantes a entrarem em contato com a gente.
 
-CONTATOS
-Wellington Gustavo Bendinelli
-Consultor de Inovação
 
-(14) 99831-7546
-wellington.gustavo@holambra.com.br
-DEIXE SUA IDEIA, PROPOSTA OU SUGESTÃO AQUI
-Nome Completo
-Empresa/Startup
-Telefone
-Proposta
-Anexe aqui documentos relevantes sobre a sua empresa ou proposta:
-
-Declaro que li e concordo com a Política de Privacidade e a Política de Cookies.
-fale com a holambra
-Acompanhe nossas redes
-
-
-Utilizamos cookies para auxiliar a sua navegação e melhorar nossos serviços. Caso clique em “Aceitar Todos os Cookies”, você concordará com a utilização acima mencionada. É possível, ainda, que você opte por rejeitar todos os cookies não necessários, clicando na opção “Rejeitar Cookies”. Para mais informações, clique em “Preferências de Cookie”. Para saber mais acesse nossa Política de Cookies. Política de Cookies
-Aceitar Todos os Cookies
-Rejeitar Cookies
-Preferências de Cookie
-Logo Holambra Cooperativa Agro Industrial
-Linha Ética
-Principal
-Código de Conduta
-
-Português
 
 Bem-vindo à Linha Ética Holambra
 Obrigado por nos contatar. Esse canal foi desenvolvido para que situações diversas possam ser relatadas para nossa empresa.
