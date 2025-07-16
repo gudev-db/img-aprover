@@ -260,7 +260,7 @@ with tab_aprovacao:
     with subtab2:
         texto_input = st.text_area("Insira o texto para validação:", height=200, key="text_input")
         revista = st.selectbox(
-            "É conteúdo de revista armazenado numa variável?",
+            "É conteúdo de revista?",
             options=["sim", "não"],
             index=None, key = "revista",
         )
